@@ -8,7 +8,8 @@ using UnityEngine.Tilemaps;
 
 public class LevelGen : MonoBehaviour
 {
-    internal int levelSize = 50, MinMaxSize = 15;
+    internal static int levelSize = 50;
+    internal int MinMaxSize = 15;
     private readonly int noiseRounds = 4;
     internal bool[,] grid;
     private Quaternion CameraAngle = Quaternion.Euler(new Vector3(-45, 180, 0));

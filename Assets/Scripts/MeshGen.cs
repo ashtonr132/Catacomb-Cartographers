@@ -19,7 +19,7 @@ public class MeshGen : MonoBehaviour
     List<List<int>> outlines = new List<List<int>>();
     HashSet<int> checkedVertices = new HashSet<int>();
 
-    public void GenerateMesh(bool[,] map, float squareSize)
+    public Mesh GenerateMesh(bool[,] map, float squareSize)
     {
         triangleDictionary.Clear();
         outlines.Clear();
@@ -39,22 +39,26 @@ public class MeshGen : MonoBehaviour
         }
 
         Mesh mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
+        Vector2[] uvs = new Vector2[vertices.Count];
+
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
+        }
+        mesh.uv = uvs;
         mesh.RecalculateNormals();
-        gameObject.AddComponent<MeshCollider>().sharedMesh = mesh;
-        CreateWallMesh();
+        return mesh;
     }
 
-    void CreateWallMesh()
+    public Mesh CreateWallMesh(float wallh = 1)
     {
         CalculateMeshOutlines();
 
         List<Vector3> wallVertices = new List<Vector3>();
         List<int> wallTriangles = new List<int>();
         Mesh wallMesh = new Mesh();
-        float wallHeight = 1;
 
         foreach (List<int> outline in outlines)
         {
@@ -63,8 +67,8 @@ public class MeshGen : MonoBehaviour
                 int startIndex = wallVertices.Count;
                 wallVertices.Add(vertices[outline[i]]); // left
                 wallVertices.Add(vertices[outline[i + 1]]); // right
-                wallVertices.Add(vertices[outline[i]] - Vector3.up * wallHeight); // bottom left
-                wallVertices.Add(vertices[outline[i + 1]] - Vector3.up * wallHeight); // bottom right
+                wallVertices.Add(vertices[outline[i]] - Vector3.up * wallh); // bottom left
+                wallVertices.Add(vertices[outline[i + 1]] - Vector3.up * wallh); // bottom right
 
                 wallTriangles.Add(startIndex + 0);
                 wallTriangles.Add(startIndex + 2);
@@ -95,8 +99,7 @@ public class MeshGen : MonoBehaviour
             triangles[i + 1] = temp;
         }
         wallMesh.SetTriangles(triangles, 0);
-        transform.GetChild(0).GetComponent<MeshFilter>().mesh = wallMesh;
-        transform.GetChild(0).gameObject.AddComponent<MeshCollider>().sharedMesh = wallMesh;
+        return wallMesh;
     }
 
     void TriangulateSquare(Square square)

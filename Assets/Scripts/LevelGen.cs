@@ -13,13 +13,10 @@ public class LevelGen : MonoBehaviour
     private readonly int noiseRounds = 4;
     internal bool[,] grid;
     private Quaternion CameraAngle = Quaternion.Euler(new Vector3(-45, 180, 0));
-
+    private float wallHeight = 1;
     [SerializeField]
     internal int? seed = null;
     internal bool useRandomSeed;
-
-    internal Tile mapTile;
-    internal Tilemap map;
 
     [Range(0, 100)]
     internal int FillPercent = 40;
@@ -45,7 +42,7 @@ public class LevelGen : MonoBehaviour
         {
             for (int j = 0; j < levelSize; j++)
             {
-                if (grid[i, j] == false)
+                if (grid[i, j] == true)
                 {
                     if (i + j < min)
                     {
@@ -70,10 +67,9 @@ public class LevelGen : MonoBehaviour
         portal2.transform.rotation = Quaternion.Euler(90, 0, 0);
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);
         Player.transform.rotation = Quaternion.Euler(90, 0, 0);
-
         Player.name = "Player";
     }
-
+    
     private void BuildMap()
     {
         useRandomSeed = seed == null ? true : false; //is this script accessed for a random level or a seeded one?
@@ -82,7 +78,21 @@ public class LevelGen : MonoBehaviour
         AddPaths(GetAreas(false), MinMaxSize);
         if (grid != null)
         {
-            GetComponent<MeshGen>().GenerateMesh(grid, 1f);
+            gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().GenerateMesh(grid, 1f);
+            GetComponent<MeshFilter>().mesh = GetComponent<MeshCollider>().sharedMesh;
+            transform.GetChild(0).gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().CreateWallMesh(wallHeight);
+            transform.GetChild(0).GetComponent<MeshFilter>().mesh = transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh;
+            bool[,] b = grid;
+            for (int i = 0; i < grid.GetLength(0); i++)
+            {
+                for (int j = 0; j < grid.GetLength(1); j++)
+                {
+                    b[i, j] = grid[i, j] == false ? true:false;
+                }
+            }
+            transform.GetChild(1).gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().GenerateMesh(b, 1f);
+            transform.GetChild(1).GetComponent<MeshFilter>().mesh = transform.GetChild(1).gameObject.GetComponent<MeshCollider>().sharedMesh;
+            transform.GetChild(1).position += Vector3.up * wallHeight;
         }
     }
 

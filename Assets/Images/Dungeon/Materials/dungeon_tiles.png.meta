@@ -48,7 +48,7 @@ TextureImporter:
     21300086: dungeon_tiles_43
     21300088: dungeon_tiles_44
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -79,9 +79,9 @@ TextureImporter:
     filterMode: 0
     aniso: -1
     mipBias: -100
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50

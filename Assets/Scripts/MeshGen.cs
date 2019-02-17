@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 public class MeshGen : MonoBehaviour
 {
-
     public SquareGrid squareGrid;
     public MeshFilter walls;
 
@@ -37,17 +36,17 @@ public class MeshGen : MonoBehaviour
                 TriangulateSquare(squareGrid.squares[x, y]);
             }
         }
-
-        Mesh mesh = new Mesh();
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
         Vector2[] uvs = new Vector2[vertices.Count];
-
         for (int i = 0; i < uvs.Length; i++)
         {
             uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
         }
-        mesh.uv = uvs;
+        Mesh mesh = new Mesh
+        {
+            vertices = vertices.ToArray(),
+            triangles = triangles.ToArray(),
+            uv = uvs
+        };
         mesh.RecalculateNormals();
         return mesh;
     }

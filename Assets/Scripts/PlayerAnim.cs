@@ -12,7 +12,8 @@ public class PlayerAnim : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (rb.velocity.magnitude > 1)
         {
             if (rb.velocity.x > 0.1f)//right

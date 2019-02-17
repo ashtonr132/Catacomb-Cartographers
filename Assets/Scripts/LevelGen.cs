@@ -8,14 +8,13 @@ using UnityEngine.Tilemaps;
 
 public class LevelGen : MonoBehaviour
 {
-    internal static int levelSize = 50;
-    internal int MinMaxSize = 15;
-    private readonly int noiseRounds = 4;
+    private int MinMaxSize = 15, noiseRounds = 4, wallHeight = 1;
+    internal static int levelSize = 25;
+    private int? seed;
     internal bool[,] grid;
     private Quaternion CameraAngle = Quaternion.Euler(new Vector3(-45, 180, 0));
-    private float wallHeight = 1;
+    
     [SerializeField]
-    internal int? seed = null;
     internal bool useRandomSeed;
 
     [Range(0, 100)]
@@ -28,8 +27,13 @@ public class LevelGen : MonoBehaviour
     [SerializeField]
     GameObject portal, player;
 
-    private void Start()
+    internal void InitLevel(int Size, int? Seed, int difficulty = 1)
     {
+        if (Size > 25)
+        {
+            levelSize = Size;
+        }
+        seed = Seed;
         BuildMap();
         LevelFill();
     }
@@ -286,8 +290,6 @@ public class LevelGen : MonoBehaviour
         {
             rnd = new System.Random(Convert.ToInt32(seed));
         }
-        Debug.Log(seed);
-
         for (int x = 0; x < levelSize; x++)
         {
             for (int y = 0; y < levelSize; y++)

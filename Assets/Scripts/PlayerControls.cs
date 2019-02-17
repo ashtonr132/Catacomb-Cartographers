@@ -2,48 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControls : MonoBehaviour {
+public class PlayerControls : MonoBehaviour
+{
     Rigidbody rb;
     float playerspeed = 2;
+    GameObject menu;
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        menu = GameObject.Find("Menu");
         rb = transform.GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        var hold = rb.velocity;
-
-        if (Input.GetKey(KeyCode.A))
+	void Update ()
+    {
+        rb.velocity = new Vector3(Input.GetAxis("Horizontal") * playerspeed, 0, Input.GetAxis("Vertical") * playerspeed);
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            hold.x = -playerspeed;
-            rb.velocity = hold;
+            menu.GetComponent<Menu>().inGameSettings();
         }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            hold.x = playerspeed;
-            rb.velocity = hold;
-        }
-        else
-        {
-            hold.x = 0;
-            rb.velocity = hold;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            hold.z = playerspeed;
-            rb.velocity = hold;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            hold.z = -playerspeed;
-            rb.velocity = hold;
-        }
-        else
-        {
-            hold.z = 0;
-            rb.velocity = hold;
-        }
-
     }
 }

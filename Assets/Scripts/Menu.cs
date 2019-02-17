@@ -38,6 +38,7 @@ public class Menu : MonoBehaviour
             }
         }
         transform.GetChild(1).GetChild(4).GetComponent<Button>().onClick.AddListener(StartSkirmish);
+        transform.GetChild(3).GetChild(1).GetComponent<Button>().onClick.AddListener(exitGame);
         EnableSubMenu(); //disable all sub menues after listeners setup
     }
 
@@ -118,7 +119,27 @@ public class Menu : MonoBehaviour
     {
         if (GameStarted)
         {
-
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
+            Level.GetComponent<MeshFilter>().mesh = null;
+            Destroy(Level.GetComponent<MeshCollider>());
+            foreach (Transform t in Level.transform)
+            {
+                if(t.name != "Walls" && t.name != "Roof")
+                {
+                    Destroy(t.gameObject);
+                }
+                else
+                {
+                    t.GetComponent<MeshFilter>().mesh = null;
+                    Destroy(t.GetComponent<MeshCollider>());
+                }
+            }
+            EnableSubMenu();
+        }
+        else
+        {
+            Application.Quit();
         }
     }
 }

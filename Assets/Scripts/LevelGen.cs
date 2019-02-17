@@ -9,7 +9,7 @@ using UnityEngine.Tilemaps;
 public class LevelGen : MonoBehaviour
 {
     private int MinMaxSize = 15, noiseRounds = 4, wallHeight = 1;
-    internal static int levelSize = 25;
+    internal static int levelSize = 50;
     private int? seed;
     internal bool[,] grid;
     private Quaternion CameraAngle = Quaternion.Euler(new Vector3(-45, 180, 0));
@@ -29,7 +29,7 @@ public class LevelGen : MonoBehaviour
 
     internal void InitLevel(int Size, int? Seed, int difficulty = 1)
     {
-        if (Size > 25)
+        if (Size > 50)
         {
             levelSize = Size;
         }
@@ -96,7 +96,7 @@ public class LevelGen : MonoBehaviour
             }
             transform.GetChild(1).gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().GenerateMesh(b, 1f);
             transform.GetChild(1).GetComponent<MeshFilter>().mesh = transform.GetChild(1).gameObject.GetComponent<MeshCollider>().sharedMesh;
-            transform.GetChild(1).position += Vector3.up * wallHeight;
+            transform.GetChild(1).position = Vector3.up * wallHeight;
         }
     }
 

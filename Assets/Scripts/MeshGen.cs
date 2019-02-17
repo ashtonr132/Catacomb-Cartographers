@@ -223,7 +223,6 @@ public class MeshGen : MonoBehaviour
 
     void CalculateMeshOutlines()
     {
-
         for (int vertexIndex = 0; vertexIndex < vertices.Count; vertexIndex++)
         {
             if (!checkedVertices.Contains(vertexIndex))

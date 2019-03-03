@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEngine.Tilemaps;
 
 //this class defines the level grid, initialises the mesh creation script.
 
@@ -67,7 +66,7 @@ public class LevelGen : MonoBehaviour
         GameObject portal2 = Instantiate(portal, new Vector3(t.w - (levelSize / 2), 0.5f, t.z - (levelSize / 2)) - (Vector3.right + Vector3.forward), Quaternion.identity, transform);
         portal1.transform.localScale /= 4;
         portal2.transform.localScale /= 4;
-        GameObject Player = Instantiate(player, portal1.transform.position - Vector3.forward, Quaternion.identity, transform);
+        GameObject Player = Instantiate(player, portal1.transform.position, Quaternion.identity, transform);
         portal2.transform.rotation = Quaternion.Euler(90, 0, 0);
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);
         Player.transform.rotation = Quaternion.Euler(90, 0, 0);

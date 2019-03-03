@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-    Rigidbody rb;
-    float playerspeed = 2;
-    GameObject menu;
-    Animator an;
+    private Rigidbody rb;
+    internal readonly float playerspeed = 2;
+    private GameObject menu;
+    private Animator an;
 
 	// Use this for initialization
 	void Start ()
@@ -20,28 +20,19 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(rb.velocity.x) < 0.2f)
-        {
-            an.SetBool("Moving", false);
-            an.SetBool("Idle", true);
-        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             menu.GetComponent<Menu>().inGameSettings();
         }
-        else if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
-            an.SetBool("Moving", true);
-            an.SetBool("Idle", false);
             var sc = transform.localScale;
             sc.x *= sc.x > 0 ? -1 : 1;
             transform.localScale = sc;
             rb.velocity = -transform.right *playerspeed;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
-            an.SetBool("Moving", true);
-            an.SetBool("Idle", false);
             var sc = transform.localScale;
             sc.x *= sc.x > 0 ? 1 : -1;
             transform.localScale = sc;
@@ -49,11 +40,15 @@ public class PlayerControls : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Rotate(Vector3.forward * playerspeed);
+            transform.Rotate(Vector3.forward * playerspeed * transform.localScale.x / transform.localScale.magnitude);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            transform.Rotate(-Vector3.forward * playerspeed);
+            transform.Rotate(-Vector3.forward * playerspeed * transform.localScale.x / transform.localScale.magnitude);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            
         }
     }
 }

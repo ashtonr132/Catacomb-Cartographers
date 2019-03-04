@@ -1,22 +1,18 @@
 fileFormatVersion: 2
-guid: 76c314a035094a24084719ac4f0e02f0
+guid: a81314325b338db42908cc3685110c79
 TextureImporter:
   fileIDToRecycleName:
-    21300000: adventurer-bow-Sheet_0
-    21300002: adventurer-bow-Sheet_1
-    21300004: adventurer-bow-Sheet_2
-    21300006: adventurer-bow-Sheet_3
-    21300008: adventurer-bow-Sheet_4
-    21300010: adventurer-bow-Sheet_5
-    21300012: adventurer-bow-Sheet_6
-    21300014: adventurer-bow-Sheet_7
-    21300016: adventurer-bow-Sheet_8
-    21300018: adventurer-bow-Sheet_9
-    21300020: adventurer-bow-Sheet_10
-    21300022: adventurer-bow-Sheet_11
-    21300024: adventurer-bow-Sheet_12
-    21300026: adventurer-bow-Sheet_13
-    21300028: adventurer-bow-Sheet_14
+    21300000: adventurer-bow-Sheet (2)_0
+    21300002: adventurer-bow-Sheet (2)_1
+    21300004: adventurer-bow-Sheet (2)_2
+    21300006: adventurer-bow-Sheet (2)_3
+    21300008: adventurer-bow-Sheet (2)_4
+    21300010: adventurer-bow-Sheet (2)_5
+    21300012: adventurer-bow-Sheet (2)_6
+    21300014: adventurer-bow-Sheet (2)_7
+    21300016: adventurer-bow-Sheet (2)_8
+    21300018: adventurer-bow-Sheet (2)_9
+    21300020: adventurer-bow-Sheet (2)_10
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -121,7 +117,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_0
+      name: adventurer-bow-Sheet (2)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -129,19 +125,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d67715957e3a5df4f979b57b93ca8aa5
+      spriteID: 8db1fb18f3430574a828927f3dc46c56
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_1
+      name: adventurer-bow-Sheet (2)_1
       rect:
         serializedVersion: 2
         x: 50
@@ -149,19 +145,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46633bb199f4b26479edf512af28484c
+      spriteID: bf87b8956ccffa1418cc0b9195873941
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_2
+      name: adventurer-bow-Sheet (2)_2
       rect:
         serializedVersion: 2
         x: 100
@@ -169,39 +165,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7bcf9f2b1d595064694272104af2045f
+      spriteID: 3df70c011e50a9246b782bc06127f3bf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_3
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 111
-        width: 50
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 22b46d540a7783d4fa25014d2ed01d3a
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: adventurer-bow-Sheet_4
+      name: adventurer-bow-Sheet (2)_3
       rect:
         serializedVersion: 2
         x: 0
@@ -209,19 +185,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1fd90679f74f7f645b5aa0abdd2fb2d3
+      spriteID: 11b1964d2d5d9a941bfc68c774b7dd4f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_5
+      name: adventurer-bow-Sheet (2)_4
       rect:
         serializedVersion: 2
         x: 50
@@ -229,19 +205,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 952898e46e19c7d4ba8f498ab3be76af
+      spriteID: dad2575bbf539ff47956ddcfee7c5ecf
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_6
+      name: adventurer-bow-Sheet (2)_5
       rect:
         serializedVersion: 2
         x: 100
@@ -249,39 +225,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9a9f6481520664845a78a25a85001d0e
+      spriteID: 2b6d9010733acf34baafc85598282e9c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_7
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 74
-        width: 50
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8c029cb5795393243a3e5c1f717bd093
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: adventurer-bow-Sheet_8
+      name: adventurer-bow-Sheet (2)_6
       rect:
         serializedVersion: 2
         x: 0
@@ -289,19 +245,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 389bb1390a47dfc41bb693aa3a742111
+      spriteID: 1a4638e2297b423488d018a257c0da9c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_9
+      name: adventurer-bow-Sheet (2)_7
       rect:
         serializedVersion: 2
         x: 50
@@ -309,19 +265,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f3957c8ef740d8e4c90524879b9a15b1
+      spriteID: 411db84830fca0a428ae1d8651cf0b72
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_10
+      name: adventurer-bow-Sheet (2)_8
       rect:
         serializedVersion: 2
         x: 100
@@ -329,39 +285,19 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71ce4d2dc5b20254090b83580505c7d3
+      spriteID: eb2e5076be54bac4cb2b2082fe1ac001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_11
-      rect:
-        serializedVersion: 2
-        x: 150
-        y: 37
-        width: 50
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 026fd2917944ad44d8642a45931bb448
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: adventurer-bow-Sheet_12
+      name: adventurer-bow-Sheet (2)_9
       rect:
         serializedVersion: 2
         x: 0
@@ -369,25 +305,25 @@ TextureImporter:
         width: 50
         height: 37
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc700a26c2fe0054c845881edd0f16f4
+      spriteID: fa96c3fdb9a43184785f93d370f1467a
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: adventurer-bow-Sheet_13
+      name: adventurer-bow-Sheet (2)_10
       rect:
         serializedVersion: 2
-        x: 50
-        y: 0
-        width: 50
-        height: 37
+        x: 20
+        y: 52
+        width: 18
+        height: 1
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -395,27 +331,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a488f68af44159d4c9a0b976a58b9fc7
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: adventurer-bow-Sheet_14
-      rect:
-        serializedVersion: 2
-        x: 100
-        y: 0
-        width: 50
-        height: 37
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 184e799a1ee632a4ab68dc334380aa95
+      spriteID: 26fc7fc284b79164cb231e675305e71d
       vertices: []
       indices: 
       edges: []
@@ -423,7 +339,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: ae96158d8037afa4dbbb00538ede6b90
+    spriteID: c06533fc658cf1046bc12ed94fcd76af
     vertices: []
     indices: 
     edges: []

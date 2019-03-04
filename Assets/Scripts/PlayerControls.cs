@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
     private Rigidbody rb;
-    internal readonly float playerspeed = 2;
+    internal float playerSpeed = 2, rotSpeed;
     private GameObject menu;
     private Animator an;
+    internal int maxHealth = 100, currentHealth, projSpeed = 5;
+    [SerializeField]
+    GameObject Arrow;
 
 	// Use this for initialization
 	void Start ()
     {
+        currentHealth = maxHealth;
         menu = GameObject.Find("Menu");
         rb = transform.GetComponent<Rigidbody>();
         an = transform.GetComponent<Animator>();
@@ -24,31 +28,96 @@ public class PlayerControls : MonoBehaviour
         {
             menu.GetComponent<Menu>().inGameSettings();
         }
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)))
         {
-            var sc = transform.localScale;
-            sc.x *= sc.x > 0 ? -1 : 1;
-            transform.localScale = sc;
-            rb.velocity = -transform.right *playerspeed;
-        }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
-        {
-            var sc = transform.localScale;
-            sc.x *= sc.x > 0 ? 1 : -1;
-            transform.localScale = sc;
-            rb.velocity = transform.right * playerspeed;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Rotate(Vector3.forward * playerspeed * transform.localScale.x / transform.localScale.magnitude);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            transform.Rotate(-Vector3.forward * playerspeed * transform.localScale.x / transform.localScale.magnitude);
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+            {
+                if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Melee") && !Input.GetKey(KeyCode.Space))
+                {
+                    an.SetTrigger("Sheathe");
+                    an.SetBool("AttackMode", false);
+                }
+                var sc = transform.localScale;
+                int d;
+                if (Input.GetKey(KeyCode.A))
+                {
+                    d = -1;
+                }
+                else
+                {
+                    d = 1;
+                }
+                if (!an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Melee") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Bow"))
+                {
+                    sc.x = Mathf.Abs(sc.x) * d;
+                    transform.localScale = sc;
+                }
+                if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1" || an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Move")
+                {
+                    rb.velocity = d * transform.right * playerSpeed;
+                    an.SetBool("Moving", true);
+                }
+            }
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
+            {
+                if (!an.GetBool("AttackMode"))
+                {
+                    an.SetBool("Moving", true);
+                }
+                int d = Input.GetKey(KeyCode.W) ? 1 : -1;
+                if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Melee"))
+                {
+                    rotSpeed = 1.5f;
+                }
+                else
+                {
+                    rotSpeed = Mathf.Lerp(rotSpeed, 2, Time.deltaTime);
+                }
+                transform.Rotate(d * Vector3.forward * playerSpeed * rotSpeed * (transform.localScale.x / transform.localScale.magnitude));
+            }
             
         }
+        else
+        {
+            an.SetBool("Moving", false);
+        }
+        if (Input.GetKey(KeyCode.Space) && !an.GetBool("Moving"))
+        {
+            if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
+            {
+                an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
+            }
+            else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
+            {
+                an.SetTrigger("Draw");
+                an.SetBool("AttackMode", true);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            float bowAnimDurWait = 0.555333f;
+            StartCoroutine(arrowSpawn(bowAnimDurWait));
+        }
+    }
+    internal void HurtPlayer(int damage)
+    {
+        an.SetTrigger("Hurt");
+        if ((currentHealth - damage) > 0)
+        {
+            currentHealth -= damage;
+        }
+        else
+        {
+            an.SetTrigger("Die");
+        }
+    }
+    internal IEnumerator arrowSpawn(float dur)
+    {
+        an.SetTrigger("BowAttack");
+        yield return new WaitForSeconds(dur);
+        GameObject arrow = Instantiate(Arrow, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
+        Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), arrow.GetComponent<BoxCollider>(), true);
+        arrow.GetComponent<Rigidbody>().velocity = transform.right * projSpeed * (transform.localScale.x / transform.localScale.magnitude);
+        Destroy(arrow, 10);
     }
 }

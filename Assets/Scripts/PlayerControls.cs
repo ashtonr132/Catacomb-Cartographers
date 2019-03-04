@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour
 {
     private Rigidbody rb;
-    internal float playerSpeed = 2, rotSpeed;
+    internal float playerSpeed = 2, rotSpeed, buttonCD = 0.5f;
     private GameObject menu;
     private Animator an;
-    internal int maxHealth = 100, currentHealth, projSpeed = 5;
+    internal int currentHealth, projSpeed = 5, buttonCount = 0;
+    internal static int maxHealth = 100; 
     [SerializeField]
     GameObject Arrow;
+    KeyCode lastKey;
 
 	// Use this for initialization
 	void Start ()
@@ -24,11 +26,60 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.anyKeyDown)
+        {
+            if (buttonCD > 0 && buttonCount == 1 && ((Input.GetKeyDown(KeyCode.A) && lastKey == KeyCode.A) || (Input.GetKeyDown(KeyCode.D) && lastKey == KeyCode.D)))
+            {
+                if (Random.value > 0.5f)
+                {
+                    an.SetTrigger("Slide2");
+                }
+                else
+                {
+                    an.SetTrigger("Slide");
+                }
+                if (an.GetBool("AttackMode"))
+                {
+                    an.SetBool("AttackMode", false);
+                }
+                if (lastKey == KeyCode.A)
+                {
+                    //transform.GetComponent<Rigidbody>().velocity = -transform.right * playerSpeed * 3;
+                    StartCoroutine(rollSpeed(1));
+                }
+                else
+                {
+                    //transform.GetComponent<Rigidbody>().velocity = transform.right * playerSpeed * 3;
+                    StartCoroutine(rollSpeed(1));
+                }
+            }
+            else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)))
+            {
+                buttonCD = 0.5f;
+                buttonCount++;
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    lastKey = KeyCode.A;
+                }
+                else
+                {
+                    lastKey = KeyCode.D;
+                }
+            }
+        }
+        if (buttonCD > 0)
+        {
+            buttonCD -= 1 * Time.deltaTime;
+        }
+        else
+        {
+            buttonCount = 0;
+        }
+            if (Input.GetKeyDown(KeyCode.Escape))
         {
             menu.GetComponent<Menu>().inGameSettings();
         }
-        if ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
         {
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
             {
@@ -71,7 +122,7 @@ public class PlayerControls : MonoBehaviour
                 }
                 else
                 {
-                    rotSpeed = Mathf.Lerp(rotSpeed, 2, Time.deltaTime);
+                    rotSpeed = Mathf.Lerp(rotSpeed, 3, Time.deltaTime);
                 }
                 transform.Rotate(d * Vector3.forward * playerSpeed * rotSpeed * (transform.localScale.x / transform.localScale.magnitude));
             }
@@ -119,5 +170,10 @@ public class PlayerControls : MonoBehaviour
         Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), arrow.GetComponent<BoxCollider>(), true);
         arrow.GetComponent<Rigidbody>().velocity = transform.right * projSpeed * (transform.localScale.x / transform.localScale.magnitude);
         Destroy(arrow, 10);
+    }
+    internal IEnumerator rollSpeed(float dur)
+    {
+        yield return new WaitForSeconds(dur);
+        transform.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.x, -playerSpeed, playerSpeed), 0, Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.z, -playerSpeed, playerSpeed));
     }
 }

@@ -6,30 +6,36 @@ public class CameraFollow : MonoBehaviour
 {
     private readonly float SmoothTime = 0.15f;
     private Vector3 CurrentVelocity = Vector3.zero;
-    public Transform Target;
+    private GameObject player;
 
     // Update is called once per frame
     void Update()
     {
         if (Menu.GameStarted)
         {
-            if (Target == null)
+            if (player != null)
             {
-                Target = GameObject.Find("Player").transform;
+                if (Cursor.lockState != CursorLockMode.Confined)
+                {
+                    Cursor.lockState = CursorLockMode.Confined;
+                }
+                RaycastHit hit;
+                Vector3 targPos;
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+                {
+                    targPos = (hit.point + player.transform.position) / 2;
+                }
+                else
+                {
+                    targPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                }
+                targPos.y = transform.position.y;
+                transform.position = Vector3.SmoothDamp(transform.position, targPos, ref CurrentVelocity, SmoothTime);
+                transform.rotation = player.transform.rotation;
             }
             else
             {
-                try
-                {
-                    var targetDestination = transform.position + Target.position - Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, Camera.main.WorldToViewportPoint(Target.position).z));
-                    transform.position = Vector3.SmoothDamp(transform.position, targetDestination, ref CurrentVelocity, SmoothTime);
-                    transform.rotation = Target.rotation;
-                }
-                catch
-                {
-                    throw new ArgumentException("Player has not been instantiated in scene.", "CameraFollow.cs");
-                }
-
+                player = GameObject.Find("Player");
             }
         }
     }

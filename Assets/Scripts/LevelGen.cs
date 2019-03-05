@@ -22,6 +22,8 @@ public class LevelGen : MonoBehaviour
 
     [SerializeField]
     Sprite[] Sprites;
+    [SerializeField]
+    PhysicMaterial wallMat;
 
     [SerializeField]
     GameObject portal, player;
@@ -85,12 +87,13 @@ public class LevelGen : MonoBehaviour
             GetComponent<MeshFilter>().mesh = GetComponent<MeshCollider>().sharedMesh;
             transform.GetChild(0).gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().CreateWallMesh(wallHeight);
             transform.GetChild(0).GetComponent<MeshFilter>().mesh = transform.GetChild(0).GetComponent<MeshCollider>().sharedMesh;
+            transform.GetChild(0).GetComponent<MeshCollider>().material = wallMat;
             bool[,] b = grid;
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    b[i, j] = grid[i, j] == false ? true:false;
+                    b[i, j] = grid[i, j] == false ? true : false;
                 }
             }
             transform.GetChild(1).gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().GenerateMesh(b, 1f);

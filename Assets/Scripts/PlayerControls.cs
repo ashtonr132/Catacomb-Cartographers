@@ -33,39 +33,40 @@ public class PlayerControls : MonoBehaviour
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y,transform.localScale.z);
         }
-        if (Input.GetKey(KeyCode.Space) && !an.GetBool("Moving"))
+        if (Input.GetKey(KeyCode.Mouse0) && !an.GetBool("Moving"))
+        {
+            if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
             {
-                if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
-                {
-                    an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
-                }
-                else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
-                {
-                    an.SetTrigger("Draw");
-                    an.SetBool("AttackMode", true);
-                }
+                an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
             }
-            else if (Input.GetKeyDown(KeyCode.E) && !an.GetBool("Moving"))
+            else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
             {
-                if (an.GetBool("AttackMode"))
-                {
-                    an.SetTrigger("Sheathe");
-                    an.SetBool("AttackMode", false);
-                }
-                an.SetTrigger("BowAttack");
+                an.SetTrigger("Draw");
+                an.SetBool("AttackMode", true);
             }
-            else if (Input.GetKeyDown(KeyCode.Q) && !an.GetBool("Moving"))
+        }
+        else if (Input.GetKey(KeyCode.Mouse1) && !an.GetBool("Moving"))
+        {
+            if (an.GetBool("AttackMode"))
             {
-                an.SetTrigger("Cast");
+                an.SetTrigger("Sheathe");
+                an.SetBool("AttackMode", false);
             }
-            else if (Input.GetKey(KeyCode.Q) && !an.GetBool("Moving"))
-            {
-                an.SetBool("CastLoop", true);
-            }else if(Input.GetKeyDown(KeyCode.C) && !an.GetBool("Moving"))
+            an.SetTrigger("BowAttack");
+        }
+        else if (Input.GetKeyDown(KeyCode.Q) && !an.GetBool("Moving"))
+        {
+            an.SetTrigger("Cast");
+        }
+        else if (Input.GetKey(KeyCode.Q) && !an.GetBool("Moving"))
+        {
+            an.SetBool("CastLoop", true);
+        }
+        else if(Input.GetKeyDown(KeyCode.C) && !an.GetBool("Moving"))
         {
             an.SetTrigger("Use");
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
+        else if (Input.GetKeyDown(KeyCode.Space) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
         {
             if (Random.value > 0.5f)
             {

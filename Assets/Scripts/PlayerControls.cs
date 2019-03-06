@@ -42,7 +42,6 @@ public class PlayerControls : MonoBehaviour
             else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
             {
                 an.SetTrigger("Draw");
-                an.SetBool("AttackMode", true);
             }
         }
         else if (Input.GetKey(KeyCode.Mouse1) && !an.GetBool("Moving"))
@@ -50,9 +49,8 @@ public class PlayerControls : MonoBehaviour
             if (an.GetBool("AttackMode"))
             {
                 an.SetTrigger("Sheathe");
-                an.SetBool("AttackMode", false);
             }
-            an.SetTrigger("BowAttack");
+            an.SetBool("BowAttack", true);
         }
         else if (Input.GetKeyDown(KeyCode.Q) && !an.GetBool("Moving"))
         {
@@ -84,16 +82,15 @@ public class PlayerControls : MonoBehaviour
             }
             velo.z = velo.y;
             velo.y = 0;
-            rb.velocity = (velo / velo.magnitude) * (playerSpeed + Random.Range(5, 8));
+            rb.velocity = (velo / velo.magnitude) * (playerSpeed + Random.Range(4, 7));
         }
         else if (Vector3.Distance(Input.mousePosition, new Vector3(Screen.width / 2, Screen.height / 2, 0)) > 125f)
         {
-            if (an.GetBool("AttackMode") == true)
+            if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
             {
-                an.SetBool("AttackMode", false);
                 an.SetTrigger("Sheathe");
             }
-            else if (!an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle2") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Draw") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
+            else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")))
             {
                 an.SetBool("Moving", true);
                 var velo = (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)).normalized;
@@ -103,7 +100,7 @@ public class PlayerControls : MonoBehaviour
                 clampSpeed();
             }
         }
-        else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move") && rb.velocity.magnitude < 0.15f)
+        else
         {
             rb.velocity = Vector3.zero;
             an.SetBool("Moving", false);
@@ -138,5 +135,14 @@ public class PlayerControls : MonoBehaviour
         {
             an.SetBool("CastLoop", false);
         }
+    }
+    internal void Sheathe(int b)
+    {
+        bool c = b == 1 ? true : false;
+        an.SetBool("AttackMode", c);
+    }
+    internal void bowAttack()
+    {
+        an.SetBool("BowAttack", false);
     }
 }

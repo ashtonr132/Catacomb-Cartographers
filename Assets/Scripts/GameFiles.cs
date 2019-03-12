@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
-public class GameManager : MonoBehaviour
+public class GameFiles : MonoBehaviour
 {
     internal static SaveData saveData;
     internal SaveData[] Saves;
     const string folderName = "CatCar_SaveData", fileExtension = ".dat";
     private string dataPath;
     BinaryFormatter binaryFormatter;
+
+    [SerializeField]
+    GameObject Level;
 
     // Start is called before the first frame update
     void Start()
@@ -24,19 +28,15 @@ public class GameManager : MonoBehaviour
         LoadD();
     }
 
-    internal void SaveD()
+    internal void SaveD(int? mainSave = null)
     {
-        for (int i = 0; i < Saves.Length; i++)
+        if (mainSave != null)
         {
-            if (Saves[i].name == saveData.name)
+            using (FileStream fileStream = File.Open(Path.Combine(dataPath, Saves[mainSave.Value].Tag + fileExtension), FileMode.OpenOrCreate))
             {
-                using (FileStream fileStream = File.Open(Path.Combine(dataPath, saveData.name + fileExtension), FileMode.OpenOrCreate))
-                {
-                    binaryFormatter.Serialize(fileStream, saveData);
-                }
+                binaryFormatter.Serialize(fileStream, Saves[mainSave.Value]);
             }
         }
-        
     }
 
     internal void LoadD()
@@ -59,22 +59,36 @@ public class GameManager : MonoBehaviour
             {
                 saveData = new SaveData
                 {
-                    name = "Save 1"
+                    Tag = "Save 1",
                 },
                 saveData = new SaveData
                 {
-                    name = "Save 2"
+                    Tag = "Save 2"
                 },
                 saveData = new SaveData
                 {
-                    name = "Save 3"
+                    Tag = "Save 3"
                 }
             };
+            for (int i = 0; i < Saves.Length; i++)
+            {
+                SaveD(i);
+            }
         }
+
+    }
+    internal void setMainSave(int sD)
+    {
+        saveData = Saves[sD -1];
+        transform.GetChild(0).GetComponent<Menu>().gameStarted();
+        Level.GetComponent<LevelGen>().InitLevel(50 + saveData.Difficulty, saveData.Seed, saveData.Difficulty);
     }
 }
+[Serializable]
 public class SaveData
 {
-    internal string name, tag;
-    internal int difficulty, currency;
+    internal string Tag;
+    internal int Difficulty = 1, Currency = 0;
+    internal int? Seed = null;
+    internal int[] Seeds;
 }

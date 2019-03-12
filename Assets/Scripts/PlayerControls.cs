@@ -6,7 +6,6 @@ public class PlayerControls : MonoBehaviour
 {
     private Rigidbody rb;
     internal float playerSpeed = 3;
-    private GameObject menu;
     private Animator an;
     internal int currentHealth, projSpeed = 5;
     internal static int maxHealth = 100; 
@@ -17,7 +16,6 @@ public class PlayerControls : MonoBehaviour
 	void Start ()
     {
         currentHealth = maxHealth;
-        menu = GameObject.Find("Menu");
         rb = transform.GetComponent<Rigidbody>();
         an = transform.GetComponent<Animator>();
 	}

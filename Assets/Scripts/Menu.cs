@@ -25,6 +25,7 @@ public class Menu : MonoBehaviour
         {
             MenuButtons[i] = transform.GetChild(i).gameObject;
         }
+
         transform.GetChild(0).GetComponent<Button>().onClick.AddListener(delegate { EnableSubMenu(0); });
         transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate { EnableSubMenu(1); });
         transform.GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { EnableSubMenu(2); });
@@ -37,6 +38,11 @@ public class Menu : MonoBehaviour
                 SkirmishIFS.Add(t.GetComponent<InputField>());
             }
         }
+
+        transform.GetChild(0).GetChild(1).GetComponent<Button>().onClick.AddListener(delegate { transform.parent.GetComponent<GameFiles>().setMainSave(1); });
+        transform.GetChild(0).GetChild(2).GetComponent<Button>().onClick.AddListener(delegate { transform.parent.GetComponent<GameFiles>().setMainSave(2); });
+        transform.GetChild(0).GetChild(3).GetComponent<Button>().onClick.AddListener(delegate { transform.parent.GetComponent<GameFiles>().setMainSave(3); });
+
         transform.GetChild(1).GetChild(4).GetComponent<Button>().onClick.AddListener(StartSkirmish);
         transform.GetChild(3).GetChild(1).GetComponent<Button>().onClick.AddListener(exitGame);
         EnableSubMenu(); //disable all sub menues after listeners setup

@@ -61,7 +61,6 @@ public class Menu : MonoBehaviour
                 InvertActiveMenu(g.transform);
             }
         }
-        
     }
 
     internal void InvertActiveMenu(Transform M, bool active = false)
@@ -92,7 +91,7 @@ public class Menu : MonoBehaviour
         {
             Difficulty = int.Parse(SkirmishIFS[0].text);
         }
-        Level.GetComponent<LevelGen>().InitLevel(LevelSize, Seed, Difficulty);
+        Level.GetComponent<LevelGen>().InitLevel(LevelSize, Seed, Difficulty, true);
         gameStarted();
     }
 

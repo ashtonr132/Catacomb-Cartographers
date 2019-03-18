@@ -27,8 +27,14 @@ public class LevelGen : MonoBehaviour
 
     [SerializeField]
     GameObject portal, player;
+    private GameObject portal1, portal2;
+    private List<GameObject> Spawners;
 
-    internal void InitLevel(int Size, int? Seed, int difficulty = 1)
+    private void Start()
+    {
+        Spawners = new List<GameObject>();
+    }
+    internal void InitLevel(int Size, int? Seed, int difficulty = 1, bool isSkirmish = false)
     {
         if (Size > 50)
         {
@@ -37,8 +43,58 @@ public class LevelGen : MonoBehaviour
         seed = Seed;
         BuildMap();
         LevelFill();
+        SpawnEnemies(Size, difficulty, isSkirmish);
     }
 
+    private void SpawnEnemies(int Size, int difficulty, bool isSkirmish = false)
+    {
+        int maxSpawners = 11 + difficulty;
+        var maxRounds = 3000;
+        int i = 0;
+        for (; ; )
+        {
+            maxRounds--;
+            if (maxRounds > 0 && i < maxSpawners)
+            {
+                float range = 1.35f;
+                if (i > maxSpawners / 3)
+                {
+                    range = 1.15f;
+                }
+                Vector3 pos = (UnityEngine.Random.insideUnitCircle * (levelSize / range)) + new Vector2(portal2.transform.position.x, portal2.transform.position.z);
+                var h = new Vector3(pos.x, 0, pos.y);
+                pos = h;
+                RaycastHit hit;
+                bool tooClose = false;
+                if (Spawners.Count > 0)
+                {
+                    foreach (var s in Spawners)
+                    {
+                        if (Vector3.Distance(s.transform.position, pos) < levelSize / 10)
+                        {
+                            tooClose = true;
+                        }
+                    }
+                }
+                if (Physics.Raycast(pos + Vector3.up, Vector3.down, out hit, Mathf.Infinity) && !tooClose)
+                {
+                    if (hit.transform.name == "Level")
+                    {
+                        GameObject Spawner = Instantiate(portal, pos, Quaternion.identity, transform);
+                        Spawner.transform.localScale /= 5;
+                        Spawner.transform.rotation = Quaternion.Euler(90, 0, 0);
+                        Spawner.name = "Spawner " + i;
+                        Spawners.Add(Spawner);
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
     private void LevelFill()
     {
         Vector4 t = new Vector4();
@@ -64,10 +120,12 @@ public class LevelGen : MonoBehaviour
                 }
             }
         }
-        GameObject portal1 = Instantiate(portal, new Vector3(t.x - (levelSize / 2), 0.5f, t.y - (levelSize / 2)) + (Vector3.right + Vector3.forward), Quaternion.identity, transform);
-        GameObject portal2 = Instantiate(portal, new Vector3(t.w - (levelSize / 2), 0.5f, t.z - (levelSize / 2)) - (Vector3.right + Vector3.forward), Quaternion.identity, transform);
+        portal1 = Instantiate(portal, new Vector3(t.x - (levelSize / 2), 0.5f, t.y - (levelSize / 2)) + (Vector3.right + Vector3.forward), Quaternion.identity, transform);
+        portal2 = Instantiate(portal, new Vector3(t.w - (levelSize / 2), 0.5f, t.z - (levelSize / 2)) - (Vector3.right + Vector3.forward), Quaternion.identity, transform);
         portal1.transform.localScale /= 4;
         portal2.transform.localScale /= 4;
+        portal1.GetComponent<Renderer>().material.color = Color.green;
+        portal2.GetComponent<Renderer>().material.color = Color.red;
         GameObject Player = Instantiate(player, portal1.transform.position, Quaternion.identity, transform);
         portal2.transform.rotation = Quaternion.Euler(90, 0, 0);
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);

@@ -51,7 +51,7 @@ public class LevelGen : MonoBehaviour
         int maxSpawners = 11 + difficulty;
         var maxRounds = 3000;
         int i = 0;
-        for (; ; )
+        for (;;)
         {
             maxRounds--;
             if (maxRounds > 0 && i < maxSpawners)
@@ -85,6 +85,7 @@ public class LevelGen : MonoBehaviour
                         Spawner.transform.rotation = Quaternion.Euler(90, 0, 0);
                         Spawner.name = "Spawner " + i;
                         Spawners.Add(Spawner);
+                        StartCoroutine(Spawner.GetComponent<Spawner>().startSpawn(1, 5));
                         i++;
                     }
                 }

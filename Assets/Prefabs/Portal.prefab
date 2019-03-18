@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8410947570443421586}
   - component: {fileID: 7076787472562935746}
   - component: {fileID: 6931583297723828171}
+  - component: {fileID: 2227671601531038238}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -94,5 +95,32 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &2227671601531038238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1296035703715064259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 055f430f9b645974884b875a50179a8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enemies:
+  - {fileID: 754522895175964874, guid: 59987f2b64e58f248b83bf0639018e8d, type: 3}
+  - {fileID: 5286611876395029010, guid: 5b7ef5b2d1ef3ab4dbc75f7b9c80d4c2, type: 3}
+  - {fileID: 4346854167708470744, guid: d9173885a79df7e4693b142689bbda14, type: 3}
+  - {fileID: 4276225768729042024, guid: cbe8c20aa6eafe449aa566e61a49e03d, type: 3}
+  - {fileID: 681436649491511119, guid: 3de8207aa874c9c40be0fe9d6dd36a14, type: 3}
+  - {fileID: 5372053415891802624, guid: 6e2317893369cd142a594259f53f6040, type: 3}
+  - {fileID: 4510493250901235604, guid: 6d070e92a5df99d408dd69dd604dbde1, type: 3}
+  - {fileID: 9068171882068647982, guid: 4491db07dec340347b4402ce90be6fae, type: 3}
+  - {fileID: 4922520386559465864, guid: d96f14d966496d94f9c2801b0e399832, type: 3}
+  - {fileID: 635683181309865583, guid: 0c083ef0997a5c8479dc0b5b0835c178, type: 3}
+  - {fileID: 5753274640346825413, guid: ef0e78626918c3b49b0051e7308d6c2a, type: 3}
+  - {fileID: 1423137527027627857, guid: a2e053eeed0e03f41983e96ab4b62f6f, type: 3}
+  - {fileID: 3394733761077601970, guid: 7378cd0a603cfb744b8cfa7896fde07f, type: 3}
+  - {fileID: 3697017732708109390, guid: 5fa997616c6ae7942830c825a77cbb60, type: 3}

@@ -7,7 +7,7 @@ public class PlayerControls : MonoBehaviour
     private Rigidbody rb;
     internal float playerSpeed = 3;
     private Animator an;
-    internal int currentHealth, projSpeed = 5;
+    internal int currentHealth, projSpeed = 15;
     internal static int maxHealth = 100; 
     [SerializeField]
     GameObject Arrow;
@@ -31,8 +31,9 @@ public class PlayerControls : MonoBehaviour
         {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y,transform.localScale.z);
         }
-        if (Input.GetKey(KeyCode.Mouse0) && !an.GetBool("Moving"))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
+            an.SetBool("Moving", false);
             if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
             {
                 an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
@@ -42,25 +43,28 @@ public class PlayerControls : MonoBehaviour
                 an.SetTrigger("Draw");
             }
         }
-        else if (Input.GetKey(KeyCode.Mouse1) && !an.GetBool("Moving"))
+        else if (Input.GetKey(KeyCode.Mouse1))
         {
+            an.SetBool("Moving", false);
             if (an.GetBool("AttackMode"))
             {
                 an.SetTrigger("Sheathe");
             }
             an.SetBool("BowAttack", true);
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && !an.GetBool("Moving"))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
+            an.SetBool("Moving", false);
             an.SetTrigger("Cast");
         }
-        else if (Input.GetKey(KeyCode.Q) && !an.GetBool("Moving"))
+        else if (Input.GetKey(KeyCode.Q))
         {
             an.SetBool("CastLoop", true);
         }
-        else if(Input.GetKeyDown(KeyCode.C) && !an.GetBool("Moving"))
+        else if(Input.GetKeyDown(KeyCode.C))
         {
-            an.SetTrigger("Use");
+            an.SetBool("Moving", false);
+            an.SetBool("Use", true);
         }
         else if (Input.GetKeyDown(KeyCode.Space) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
         {
@@ -82,13 +86,14 @@ public class PlayerControls : MonoBehaviour
             velo.y = 0;
             rb.velocity = (velo / velo.magnitude) * (playerSpeed + Random.Range(4, 7));
         }
-        else if (Vector3.Distance(Input.mousePosition, new Vector3(Screen.width / 2, Screen.height / 2, 0)) > 125f)
+        else if (Vector3.Distance(Input.mousePosition, new Vector3(Screen.width / 2, Screen.height / 2, 0)) > (Screen.width+Screen.height)/15)
         {
             if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
             {
                 an.SetTrigger("Sheathe");
+                an.SetBool("Moving", false);
             }
-            else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")))
+            else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")) && !an.GetBool("Use"))
             {
                 an.SetBool("Moving", true);
                 var velo = (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)).normalized;
@@ -100,8 +105,11 @@ public class PlayerControls : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector3.zero;
             an.SetBool("Moving", false);
+        }
+        if (!an.GetBool("Moving"))
+        {
+            rb.velocity = Vector3.zero;
         }
     }
     internal void HurtPlayer(int damage)
@@ -120,7 +128,7 @@ public class PlayerControls : MonoBehaviour
     {
         GameObject arrow = Instantiate(Arrow, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
         Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), arrow.GetComponent<BoxCollider>(), true);
-        arrow.GetComponent<Rigidbody>().velocity = transform.right * projSpeed * (transform.localScale.x / transform.localScale.magnitude);
+        arrow.GetComponent<Rigidbody>().velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * projSpeed;
         Destroy(arrow, 10);
     }
     internal void clampSpeed()
@@ -142,5 +150,9 @@ public class PlayerControls : MonoBehaviour
     internal void bowAttack()
     {
         an.SetBool("BowAttack", false);
+    }
+    internal void use()
+    {
+        an.SetBool("Use", false);
     }
 }

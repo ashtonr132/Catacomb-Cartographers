@@ -1,28 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour
 {
     private Rigidbody rb;
     internal float playerSpeed = 3;
     private Animator an;
-    internal int currentHealth, projSpeed = 15;
-    internal static int maxHealth = 100; 
+    internal int currentHealth, lastHealth, projSpeed = 15;
+    internal static int maxHealth = 100;
     [SerializeField]
     GameObject Arrow;
-
+    GameObject canvas;
 	// Use this for initialization
 	void Start ()
     {
         currentHealth = maxHealth;
+        lastHealth = currentHealth;
         rb = transform.GetComponent<Rigidbody>();
         an = transform.GetComponent<Animator>();
+        canvas = GameObject.Find("Canvas");
+        canvas.transform.GetChild(1).gameObject.SetActive(true);
 	}
 
     // Update is called once per frame
     void Update()
     {
+        transform.parent.rotation = Quaternion.identity;
+        if (currentHealth < lastHealth)
+        {
+            updateUI(hp:currentHealth);
+        }
+        lastHealth = currentHealth;
         if (Input.mousePosition.x > Screen.width/2)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
@@ -96,11 +107,11 @@ public class PlayerControls : MonoBehaviour
             else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")) && !an.GetBool("Use"))
             {
                 an.SetBool("Moving", true);
-                var velo = (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)).normalized;
-                velo.z = velo.y;
-                velo.y = 0;
-                rb.velocity = velo * playerSpeed;
-                clampSpeed();
+                RaycastHit hit;
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && hit.transform.name.Contains("Level"))
+                {
+                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                }
             }
         }
         else
@@ -109,7 +120,7 @@ public class PlayerControls : MonoBehaviour
         }
         if (!an.GetBool("Moving"))
         {
-            rb.velocity = Vector3.zero;
+            transform.parent.GetComponent<NavMeshAgent>().velocity = Vector3.zero;
         }
     }
     internal void HurtPlayer(int damage)
@@ -154,5 +165,16 @@ public class PlayerControls : MonoBehaviour
     internal void use()
     {
         an.SetBool("Use", false);
+    }
+    internal void updateUI(float? hp = null, float? rp = null)
+    {
+        if (hp != null)
+        {
+            canvas.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Slider>().value = hp.Value;
+        }
+        if (rp != null)
+        {
+            canvas.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<Slider>().value = rp.Value;
+        }
     }
 }

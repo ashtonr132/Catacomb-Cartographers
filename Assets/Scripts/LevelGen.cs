@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -29,11 +30,12 @@ public class LevelGen : MonoBehaviour
     GameObject portal, player;
     private GameObject portal1, portal2;
     private List<GameObject> Spawners;
-
+    
     private void Start()
     {
         Spawners = new List<GameObject>();
     }
+
     internal void InitLevel(int Size, int? Seed, int difficulty = 1, bool isSkirmish = false)
     {
         if (Size > 50)
@@ -43,6 +45,7 @@ public class LevelGen : MonoBehaviour
         seed = Seed;
         BuildMap();
         LevelFill();
+        GetComponent<NavMeshSurface>().BuildNavMesh();
         SpawnEnemies(Size, difficulty, isSkirmish);
     }
 
@@ -130,7 +133,7 @@ public class LevelGen : MonoBehaviour
         GameObject Player = Instantiate(player, portal1.transform.position, Quaternion.identity, transform);
         portal2.transform.rotation = Quaternion.Euler(90, 0, 0);
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);
-        Player.transform.rotation = Quaternion.Euler(90, 0, 0);
+        Player.transform.GetChild(0).rotation = Quaternion.Euler(90, 0, 0);
         Player.name = "Player";
     }
     

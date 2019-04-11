@@ -31,7 +31,7 @@ public class CameraFollow : MonoBehaviour
                 }
                 targPos.y = transform.position.y;
                 transform.position = Vector3.SmoothDamp(transform.position, targPos, ref CurrentVelocity, SmoothTime);
-                transform.rotation = player.transform.rotation;
+                transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
             }
             else
             {

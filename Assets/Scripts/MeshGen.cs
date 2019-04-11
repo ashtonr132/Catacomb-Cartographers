@@ -2,10 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//https://unity3d.com/learn/tutorials/projects/procedural-cave-generation-tutorial/collisions-textures?playlist=17153
-//making a mesh from a list of points, midly edited for cleaning and stuff but mostly intact.
-//Gets in a grid, and extrapolates points for verts, verts to triangles and triangles into a custom mesh.
-
 public class MeshGen : MonoBehaviour
 {
     public SquareGrid squareGrid;
@@ -23,9 +19,7 @@ public class MeshGen : MonoBehaviour
         triangleDictionary.Clear();
         outlines.Clear();
         checkedVertices.Clear();
-
         squareGrid = new SquareGrid(map, squareSize);
-
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
@@ -173,13 +167,21 @@ public class MeshGen : MonoBehaviour
         AssignVertices(points);
 
         if (points.Length >= 3)
+        {
             CreateTriangle(points[0], points[1], points[2]);
+        }
         if (points.Length >= 4)
+        {
             CreateTriangle(points[0], points[2], points[3]);
+        }
         if (points.Length >= 5)
+        {
             CreateTriangle(points[0], points[3], points[4]);
+        }
         if (points.Length >= 6)
+        {
             CreateTriangle(points[0], points[4], points[5]);
+        }
 
     }
 
@@ -215,8 +217,10 @@ public class MeshGen : MonoBehaviour
         }
         else
         {
-            List<Triangle> triangleList = new List<Triangle>();
-            triangleList.Add(triangle);
+            List<Triangle> triangleList = new List<Triangle>
+            {
+                triangle
+            };
             triangleDictionary.Add(vertexIndexKey, triangleList);
         }
     }
@@ -232,8 +236,10 @@ public class MeshGen : MonoBehaviour
                 {
                     checkedVertices.Add(vertexIndex);
 
-                    List<int> newOutline = new List<int>();
-                    newOutline.Add(vertexIndex);
+                    List<int> newOutline = new List<int>
+                    {
+                        vertexIndex
+                    };
                     outlines.Add(newOutline);
                     FollowOutline(newOutlineVertex, outlines.Count - 1);
                     outlines[outlines.Count - 1].Add(vertexIndex);
@@ -324,7 +330,6 @@ public class MeshGen : MonoBehaviour
             }
         }
 
-
         public bool Contains(int vertexIndex)
         {
             return vertexIndex == vertexIndexA || vertexIndex == vertexIndexB || vertexIndex == vertexIndexC;
@@ -385,13 +390,21 @@ public class MeshGen : MonoBehaviour
             centreLeft = bottomLeft.above;
 
             if (topLeft.active)
+            {
                 configuration += 8;
+            }
             if (topRight.active)
+            { 
                 configuration += 4;
+            }
             if (bottomRight.active)
+            {
                 configuration += 2;
+            }
             if (bottomLeft.active)
+            {
                 configuration += 1;
+            }
         }
 
     }
@@ -400,7 +413,6 @@ public class MeshGen : MonoBehaviour
     {
         public Vector3 position;
         public int vertexIndex = -1;
-
         public Node(Vector3 _pos)
         {
             position = _pos;
@@ -409,16 +421,13 @@ public class MeshGen : MonoBehaviour
 
     public class ControlNode : Node
     {
-
         public bool active;
         public Node above, right;
-
         public ControlNode(Vector3 _pos, bool _active, float squareSize) : base(_pos)
         {
             active = _active;
             above = new Node(position + Vector3.forward * squareSize / 2f);
             right = new Node(position + Vector3.right * squareSize / 2f);
         }
-
     }
 }

@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
 
     internal IEnumerator startSpawn(float wait, int spawn)
     {
-        int enemy = Random.RandomRange(0, Enemies.Length), i = 0;
+        int enemy = Random.Range(0, Enemies.Length), i = 0;
         for (;;)
         {
             var n = Random.insideUnitCircle * 3;
@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
                     if (hit.transform.name.Contains("Level"))
                     {
                         yield return new WaitForSeconds(wait);
-                        GameObject e = Instantiate(Enemies[enemy], transform.position + new Vector3(n.x, 0, n.y), Quaternion.Euler(90, 0, 0), transform);
+                        GameObject e = Instantiate(Enemies[enemy], transform.position + new Vector3(n.x, 0.5f, n.y), Quaternion.Euler(90, 0, 0), transform);
                         i++;
                         currentCount++;
                     }

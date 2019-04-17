@@ -9,7 +9,7 @@ public class PlayerControls : MonoBehaviour
     private Rigidbody rb;
     internal float playerSpeed = 3;
     private Animator an;
-    internal int currentHealth, lastHealth, projSpeed = 15;
+    internal float currentHealth, lastHealth, projSpeed = 15, damage = 1;
     internal static int maxHealth = 100;
     [SerializeField]
     GameObject Arrow;
@@ -29,19 +29,18 @@ public class PlayerControls : MonoBehaviour
     void Update()
     {
         transform.parent.rotation = Quaternion.identity;
+        if (transform.position != transform.parent.position)
+        {
+            transform.position = transform.parent.position;
+        }
         if (currentHealth < lastHealth)
         {
             updateUI(hp:currentHealth);
         }
+
         lastHealth = currentHealth;
-        if (Input.mousePosition.x > Screen.width/2)
-        {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y,transform.localScale.z);
-        }
+        GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true;
+        
         if (Input.GetKey(KeyCode.Mouse0))
         {
             an.SetBool("Moving", false);
@@ -175,6 +174,15 @@ public class PlayerControls : MonoBehaviour
         if (rp != null)
         {
             canvas.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<Slider>().value = rp.Value;
+        }
+    }
+    internal void takeDamage(float dmg)
+    {
+        GetComponent<Animator>().SetTrigger("Hurt");
+        currentHealth -= dmg;
+        if (currentHealth <= 0)
+        {
+            GetComponent<Animator>().SetTrigger("Die");
         }
     }
 }

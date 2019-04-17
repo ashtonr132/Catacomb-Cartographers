@@ -124,6 +124,11 @@ MonoBehaviour:
   - {fileID: 1423137527027627857, guid: a2e053eeed0e03f41983e96ab4b62f6f, type: 3}
   - {fileID: 3394733761077601970, guid: 7378cd0a603cfb744b8cfa7896fde07f, type: 3}
   - {fileID: 3697017732708109390, guid: 5fa997616c6ae7942830c825a77cbb60, type: 3}
+  Projectiles:
+  - {fileID: 4711240890617520623, guid: d7e956d2eff3ad845845090d5f7e7365, type: 3}
+  - {fileID: 4310463006260131628, guid: 468935af74266ce4797318528197c9bc, type: 3}
+  - {fileID: 2949426294955124574, guid: 22817f33a3d8bdc41b836eb11fd35e3a, type: 3}
+  - {fileID: 3565531075406055113, guid: 5f627875045f0df458c32d0a5d18aad5, type: 3}
 --- !u!65 &6328585072474119109
 BoxCollider:
   m_ObjectHideFlags: 0

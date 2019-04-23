@@ -9,8 +9,10 @@ public class PlayerControls : MonoBehaviour
     private Rigidbody rb;
     internal float playerSpeed = 3;
     private Animator an;
-    internal float currentHealth, lastHealth, projSpeed = 15, damage = 1;
+
+    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5;
     internal static int maxHealth = 100;
+
     [SerializeField]
     GameObject Arrow;
     GameObject canvas;
@@ -139,7 +141,7 @@ public class PlayerControls : MonoBehaviour
         GameObject arrow = Instantiate(Arrow, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
         Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), arrow.GetComponent<BoxCollider>(), true);
         arrow.GetComponent<Rigidbody>().velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * projSpeed;
-        Destroy(arrow, 10);
+        Destroy(arrow, projDuration);
     }
     internal void clampSpeed()
     {

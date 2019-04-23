@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 352258376176088425}
   - component: {fileID: 151070523744885474}
   - component: {fileID: 6371961531116006873}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamageCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1426673901946227420}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.36700004}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5753274640346825438}
   m_RootOrder: 0
@@ -43,7 +43,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
+  m_Size: {x: 0.32, y: 0.25, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6371961531116006873
 MonoBehaviour:
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 5753274640346825432}
   - component: {fileID: 5753274640346825435}
   - component: {fileID: 5753274640346825434}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5753274640346825413}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -92,7 +92,7 @@ Transform:
   - {fileID: 5959161192380346210}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5753274640346825433
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -152,8 +152,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.25, z: 1}
-  m_Center: {x: 0, y: 0.01, z: 0}
+  m_Size: {x: 0.32, y: 0.25, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5753274640346825435
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,9 +199,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5959161192380346210}
   - component: {fileID: 1798856084123307051}
-  m_Layer: 8
-  m_Name: MeleeAttackCollider
-  m_TagString: Untagged
+  m_Layer: 9
+  m_Name: MeleeCollider
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,8 +214,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7488925501938109317}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.36700004}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5753274640346825438}
   m_RootOrder: 1
@@ -231,5 +231,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.16, y: 0.25, z: 0.1}
+  m_Center: {x: -0.08, y: 0, z: 0}

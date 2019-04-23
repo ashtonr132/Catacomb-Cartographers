@@ -12,7 +12,6 @@ public class LevelGen : MonoBehaviour
     internal static int levelSize = 50;
     private int? seed;
     internal bool[,] grid;
-    private Quaternion CameraAngle = Quaternion.Euler(new Vector3(-45, 180, 0));
     
     [SerializeField]
     internal bool useRandomSeed;
@@ -45,7 +44,6 @@ public class LevelGen : MonoBehaviour
         seed = Seed;
         BuildMap();
         LevelFill();
-        GetComponent<NavMeshSurface>().BuildNavMesh();
         SpawnEnemies(Size, difficulty, isSkirmish);
     }
 
@@ -129,6 +127,7 @@ public class LevelGen : MonoBehaviour
         portal2.transform.localScale /= 4;
         portal1.GetComponent<Renderer>().material.color = Color.green;
         portal2.GetComponent<Renderer>().material.color = Color.red;
+        GetComponent<NavMeshSurface>().BuildNavMesh();
         GameObject Player = Instantiate(player, portal1.transform.position, Quaternion.identity, transform);
         portal2.transform.rotation = Quaternion.Euler(90, 0, 0);
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public enum EnemyType // 0 ranged, 1 melee, 2 cannot attack
+    public enum EnemyType
     {
         AxeBandit, EarthWisp, EyeDemon, FireWisp, Goblin, Kobold, Minataur, Oculothorax, Ogre, Slime, Sorcerer, WaterWisp, WindWisp, Mimic, unassigned 
     }
 
     public EnemyType type = EnemyType.unassigned;
-    internal float maxHealth = 100, currentHealth, projSpeed = 15, visionRange = 5, damage = 1, aggressiveness = 1;
+    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 5, projDamage = 0.5f, meleeDamage = 1, aggressiveness = 1, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1;
     private GameObject Projectile = null;
     private bool isRanged = false;
     internal static GameObject Player;
@@ -26,23 +26,19 @@ public class Enemy : MonoBehaviour
         {
             isRanged = true;
         }
-        else if(transform.GetChild(0).name.Contains("Melee"))
-        {
-            //transform.GetChild(0).gameObject.AddComponent<AttackCollider>();
-        }
     }
 
     internal void AttackColl()
     {
         if (type != EnemyType.unassigned)
         {
-            if (!isRanged)
+            if (isRanged)
             {
-                StartCoroutine(MeleeAttack());
+                StartCoroutine(RangedAttack());
             }
             else
             {
-                StartCoroutine(RangedAttack());
+                StartCoroutine(MeleeAttack());
             }
         }
     }
@@ -70,7 +66,7 @@ public class Enemy : MonoBehaviour
         GameObject nproj = Instantiate(Projectile, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
         Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), nproj.GetComponent<BoxCollider>(), true);
         nproj.GetComponent<Rigidbody>().velocity = (transform.position - Player.transform.position).normalized * projSpeed;
-        Destroy(nproj, 10);
+        Destroy(nproj, projDuration);
     }
 
     internal void takeDamage(float dmg)

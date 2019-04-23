@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2984621106136997893}
   - component: {fileID: 3463255096077616028}
   - component: {fileID: 6724662215651386063}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamageCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 180386793098023574}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.36700004}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4922520386559465869}
   m_RootOrder: 0
@@ -43,8 +43,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3, y: 0.25, z: 0.1}
+  m_Center: {x: 0.045, y: 0, z: 0}
 --- !u!114 &6724662215651386063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4922520386559465867}
   - component: {fileID: 4922520386559465866}
   - component: {fileID: 4922520386559465865}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Oculothorax
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4922520386559465864}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -92,7 +92,7 @@ Transform:
   - {fileID: 1021738530360690903}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4922520386559465868
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -152,8 +152,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 0.4, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3, y: 0.25, z: 0.1}
+  m_Center: {x: 0.045, y: 0, z: 0}
 --- !u!54 &4922520386559465866
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -199,9 +199,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1021738530360690903}
   - component: {fileID: 5267343416560520222}
-  m_Layer: 8
-  m_Name: MeleeAttackCollider
-  m_TagString: Untagged
+  m_Layer: 9
+  m_Name: MeleeCollider
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -214,7 +214,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5297764327390003801}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.36700004}
+  m_LocalPosition: {x: -0.067, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children: []
   m_Father: {fileID: 4922520386559465869}
@@ -231,5 +231,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
+  m_Size: {x: 0.1, y: 0.15, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}

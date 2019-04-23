@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4705164067244325828}
   - component: {fileID: 5247979556288891417}
   - component: {fileID: 6394934147287943153}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamageCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4564257581650519657}
   - component: {fileID: 1728899654181754393}
   - component: {fileID: 5195175149909218754}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EarthWisp
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -84,14 +84,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5286611876395029010}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4705164067244325828}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3311966484496946134
 SpriteRenderer:
   m_ObjectHideFlags: 0

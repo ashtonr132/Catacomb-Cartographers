@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4346854167708470749}
   - component: {fileID: 4346854167708470746}
   - component: {fileID: 4346854167708470747}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye Demon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4346854167708470744}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4230857795237239787}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4346854167708470748
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16, z: 1}
+  m_Size: {x: 0.16, y: 0.16, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6863812944696771403
 GameObject:
@@ -142,9 +142,9 @@ GameObject:
   - component: {fileID: 4230857795237239787}
   - component: {fileID: 8833215569813818752}
   - component: {fileID: 2680667794423985129}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamageCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -157,8 +157,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6863812944696771403}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.36700004}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4346854167708470751}
   m_RootOrder: 0
@@ -174,7 +174,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
+  m_Size: {x: 0.16, y: 0.16, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2680667794423985129
 MonoBehaviour:

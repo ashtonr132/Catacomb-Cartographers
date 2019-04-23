@@ -6,16 +6,36 @@ public class DamageCollider : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.name.Contains("DamageCollider"))
-        {
-            if (other.transform.parent.name.Contains("Player") && transform.parent.tag.Contains("Enemy"))
+            if (transform.tag.Contains("Enemy") && other.transform.tag.Contains("Player")) //player hit this enemy
             {
-                GetComponentInParent<Enemy>().takeDamage(other.GetComponentInParent<PlayerControls>().damage);
+                if (other.name.Contains("Proj")) //player proj hits this enemy
+                {
+                    GetComponentInParent<Enemy>().takeDamage(
+                        (Enemy.Player.GetComponentInChildren<PlayerControls>().projDamage / 100)
+                        * (100 - GetComponentInParent<Enemy>().pDmgRes));
+                }
+                else if (other.name.Contains("Melee")) //player melee hits this enemy
+                {
+                    GetComponentInParent<Enemy>().takeDamage(
+                        (other.GetComponentInParent<PlayerControls>().meleeDamage / 100)
+                        * (100 - GetComponent<Enemy>().mDmgRes));
+                }
             }
-            else if (other.transform.parent.name.Contains("Enemy") && transform.parent.tag.Contains("Player"))
+            else if(transform.tag.Contains("Player") && other.transform.tag.Contains("Enemy")) //enemy hit this player
             {
-                GetComponentInParent<PlayerControls>().takeDamage(other.GetComponentInParent<Enemy>().damage);
+                if (other.name.Contains("Proj"))
+                {
+                    GetComponentInParent<PlayerControls>().takeDamage(
+                        (other.GetComponentInParent<Enemy>().projDamage / 100) 
+                        * (100 - GetComponentInParent<PlayerControls>().pDmgRes));
+                }
+                else if (other.name.Contains("Melee"))
+                {
+                    GetComponentInParent<PlayerControls>().takeDamage(
+                        (other.GetComponentInParent<Enemy>().meleeDamage / 100) 
+                        * (100 - GetComponentInParent<PlayerControls>().mDmgRes));
+                }
             }
-        }
+        
     }
 }

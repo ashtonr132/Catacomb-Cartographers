@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1423137527027627856}
   - component: {fileID: 1423137527027627860}
   - component: {fileID: 1423137527027627861}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sorcerer
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423137527027627857}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.874887, y: -3.597948, z: 6.056587}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2374589948949776260}
@@ -129,8 +129,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.34, y: 0.59, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3, y: 0.6, z: 0.1}
+  m_Center: {x: -0.03, y: 0, z: 0}
 --- !u!1 &8884340594872371159
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,9 +142,9 @@ GameObject:
   - component: {fileID: 2374589948949776260}
   - component: {fileID: 2131383912153682938}
   - component: {fileID: 2483146476663142973}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DamageCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,9 +156,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8884340594872371159}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 25.874887, y: 3.9649482, z: -6.056587}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1423137527027627862}
   m_RootOrder: 0
@@ -174,8 +174,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.15, z: 0.45}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3, y: 0.48, z: 0.1}
+  m_Center: {x: -0.03, y: 0.03, z: 0}
 --- !u!114 &2483146476663142973
 MonoBehaviour:
   m_ObjectHideFlags: 0

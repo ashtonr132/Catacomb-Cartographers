@@ -29,17 +29,19 @@ public class LevelGen : MonoBehaviour
     GameObject portal, player;
     private GameObject portal1, portal2;
     private List<GameObject> Spawners;
+    internal static float diff;
     
     private void Start()
     {
         Spawners = new List<GameObject>();
     }
 
-    internal void InitLevel(int Size, int? Seed, int difficulty = 1, bool isSkirmish = false)
+    internal void InitLevel(float Size, int? Seed, float difficulty = 1, bool isSkirmish = false)
     {
+        diff = difficulty;
         if (Size > 50)
         {
-            levelSize = Size;
+            levelSize = (int)Size;
         }
         seed = Seed;
         BuildMap();
@@ -47,9 +49,9 @@ public class LevelGen : MonoBehaviour
         SpawnEnemies(Size, difficulty, isSkirmish);
     }
 
-    private void SpawnEnemies(int Size, int difficulty, bool isSkirmish = false)
+    private void SpawnEnemies(float Size, float difficulty, bool isSkirmish = false)
     {
-        int maxSpawners = 11 + difficulty;
+        int maxSpawners = 11 + (int)difficulty;
         var maxRounds = 3000;
         int i = 0;
         for (;;)

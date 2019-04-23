@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour
     internal IEnumerator setStats(Enemy e, int recs)
     {
         e.name = e.type + " " + currentCount.ToString();
-        int diff = GameFiles.saveData.Difficulty;
+        float diff = LevelGen.diff;
         switch (e.type)
         {
             case Enemy.EnemyType.AxeBandit:

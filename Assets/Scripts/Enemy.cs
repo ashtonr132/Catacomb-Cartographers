@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     }
 
     public EnemyType type = EnemyType.unassigned;
-    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 5, projDamage = 0.5f, meleeDamage = 1, aggressiveness = 1, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1;
+    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 5, projDamage = 0.5f, meleeDamage = 1, aggressiveness = 1, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5;
     private GameObject Projectile = null;
     private bool isRanged = false;
     internal static GameObject Player;
@@ -30,6 +30,15 @@ public class Enemy : MonoBehaviour
 
     internal void AttackColl()
     {
+        if (transform.parent.rotation != Quaternion.identity) //cleanups
+        {
+            transform.parent.rotation = Quaternion.identity;
+        }
+        if (transform.position != transform.parent.position)
+        {
+            transform.position = transform.parent.position;
+        }
+
         if (type != EnemyType.unassigned)
         {
             if (isRanged)
@@ -45,9 +54,9 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator MeleeAttack()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.1f);
-        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.01f);
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
     private IEnumerator RangedAttack()
@@ -71,7 +80,14 @@ public class Enemy : MonoBehaviour
 
     internal void takeDamage(float dmg)
     {
-        GetComponent<Animator>().SetTrigger("Hurt");
+        try
+        {
+            GetComponent<Animator>().SetTrigger("Hurt");
+        }
+        catch (System.Exception)
+        {
+            throw; //animation missing ignore indev
+        }
         currentHealth -= dmg;
         if (currentHealth <= 0)
         {
@@ -81,8 +97,7 @@ public class Enemy : MonoBehaviour
             }
             catch (System.Exception)
             {
-
-                throw;
+                throw; //animation missing ignore indev
             }
         }
     }

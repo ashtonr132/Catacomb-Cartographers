@@ -10,12 +10,13 @@ public class PlayerControls : MonoBehaviour
     internal float playerSpeed = 3;
     private Animator an;
 
-    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5;
+    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5;
     internal static int maxHealth = 100;
 
     [SerializeField]
     GameObject Arrow;
     GameObject canvas;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -30,7 +31,10 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.parent.rotation = Quaternion.identity;
+        if (transform.parent.rotation != Quaternion.identity) //cleanups
+        {
+            transform.parent.rotation = Quaternion.identity;
+        }
         if (transform.position != transform.parent.position)
         {
             transform.position = transform.parent.position;
@@ -41,7 +45,7 @@ public class PlayerControls : MonoBehaviour
         }
 
         lastHealth = currentHealth;
-        GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true;
+        GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true; //side facing
         
         if (Input.GetKey(KeyCode.Mouse0))
         {
@@ -49,6 +53,7 @@ public class PlayerControls : MonoBehaviour
             if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
             {
                 an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
+                StartCoroutine(MeleeAttack());
             }
             else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
             {
@@ -186,5 +191,11 @@ public class PlayerControls : MonoBehaviour
         {
             GetComponent<Animator>().SetTrigger("Die");
         }
+    }
+    private IEnumerator MeleeAttack()
+    {
+        transform.GetChild(1).gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.01f);
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 }

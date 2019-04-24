@@ -84,10 +84,9 @@ public class LevelGen : MonoBehaviour
                     if (hit.transform.name == "Level")
                     {
                         GameObject Spawner = Instantiate(portal, pos, Quaternion.identity, transform);
-                        Spawner.transform.localScale /= 5;
                         Spawner.transform.rotation = Quaternion.Euler(90, 0, 0);
                         Spawners.Add(Spawner);
-                        StartCoroutine(Spawner.GetComponent<Spawner>().startSpawn(1, 5));
+                        StartCoroutine(Spawner.GetComponent<Spawner>().startSpawn(1, 1));
                         i++;
                     }
                 }

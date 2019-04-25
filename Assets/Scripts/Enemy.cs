@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     }
 
     public EnemyType type = EnemyType.unassigned;
-    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 5, projDamage = 0.5f, meleeDamage = 1, aggressiveness = 1, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5;
+    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 5, projDamage = 5, meleeDamage = 10, aggressiveness = 1, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5, criticalMultiplier = 1.2f;
     private GameObject Projectile = null;
     private bool isRanged = false;
     internal static GameObject Player;
@@ -94,6 +94,7 @@ public class Enemy : MonoBehaviour
             try
             {
                 GetComponent<Animator>().SetTrigger("Die");
+                Destroy(gameObject.transform.parent, 3);
             }
             catch (System.Exception)
             {

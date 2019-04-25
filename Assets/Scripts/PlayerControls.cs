@@ -10,7 +10,7 @@ public class PlayerControls : MonoBehaviour
     internal float playerSpeed = 3;
     private Animator an;
 
-    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5;
+    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f;
     internal static int maxHealth = 100;
 
     [SerializeField]
@@ -41,12 +41,19 @@ public class PlayerControls : MonoBehaviour
         }
         if (currentHealth < lastHealth)
         {
-            updateUI(hp:currentHealth);
+            updateUI(hp: currentHealth);
         }
 
         lastHealth = currentHealth;
-        GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true; //side facing
-        
+        if (an.GetBool("Moving"))
+        {
+            
+            GetComponent<SpriteRenderer>().flipX = transform.parent.GetComponent<NavMeshAgent>().destination.x >= transform.position.x ? false : true; //side facing
+        }
+        else
+        { 
+            GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true; //side facing
+        }
         if (Input.GetKey(KeyCode.Mouse0))
         {
             an.SetBool("Moving", false);
@@ -93,17 +100,9 @@ public class PlayerControls : MonoBehaviour
             {
                 an.SetTrigger("Slide2");
             }
-            var velo = (Input.mousePosition - new Vector3(Screen.width / 2, Screen.height / 2, 0)).normalized;
-            if (!an.GetBool("Moving"))
-            {
-                an.SetBool("Moving", true);
-                velo *= playerSpeed;
-            }
-            velo.z = velo.y;
-            velo.y = 0;
-            rb.velocity = (velo / velo.magnitude) * (playerSpeed + Random.Range(4, 7));
+            rb.velocity = transform.position - transform.parent.GetComponent<NavMeshAgent>().destination * (playerSpeed + Random.Range(7, 11));
         }
-        else if (Vector3.Distance(Input.mousePosition, new Vector3(Screen.width / 2, Screen.height / 2, 0)) > (Screen.width+Screen.height)/15)
+        else if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
             {
@@ -114,7 +113,24 @@ public class PlayerControls : MonoBehaviour
             {
                 an.SetBool("Moving", true);
                 RaycastHit hit;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && hit.transform.name.Contains("Level"))
+                Vector3 directionV = Vector3.zero;
+                if (Input.GetKey(KeyCode.W))
+                {
+                    directionV.z++;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    directionV.z--;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    directionV.x++;
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    directionV.x--;
+                }
+                if (Physics.Raycast(transform.parent.position + directionV, Vector3.down, out hit) && hit.transform.name.Contains("Level"))
                 {
                     transform.parent.GetComponent<NavMeshAgent>().SetDestination(hit.point);
                 }

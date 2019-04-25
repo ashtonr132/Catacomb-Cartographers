@@ -25,28 +25,32 @@ public class DamageCollider : MonoBehaviour
         {
             if (other.name.Contains("Proj")) //player proj hits this enemy
             {
-                doDamage(pcs.projDamage, ens.pDmgRes, pcs.trueDamagePC, pcs.criticalStrikePC * Rdctn);
+                doDamage(pcs.projDamage, ens.pDmgRes, pcs.trueDamagePC, pcs.criticalStrikePC, pcs.criticalMultiplier * Rdctn);
+                Destroy(other.transform.parent.gameObject);
             }
             else if (other.name.Contains("Melee")) //player melee hits this enemy
             {
-                doDamage(pcs.meleeDamage, ens.mDmgRes, pcs.trueDamagePC * Rdctn, pcs.criticalStrikePC);
+                doDamage(pcs.meleeDamage, ens.mDmgRes, pcs.trueDamagePC * Rdctn, pcs.criticalStrikePC, pcs.criticalMultiplier);
             }
         }
         else if(transform.tag.Contains("Player") && other.transform.tag.Contains("Enemy")) //enemy hit this player
         {
             if (other.name.Contains("Proj"))
             {
-                doDamage(ens.projDamage, pcs.pDmgRes, ens.trueDmgPC, ens.criticalStrikePC * Rdctn, true);
+                doDamage(ens.projDamage, pcs.pDmgRes, ens.trueDmgPC, ens.criticalStrikePC, ens.criticalMultiplier * Rdctn, true);
+                Destroy(other.transform.parent.gameObject);
             }
             else if (other.name.Contains("Melee"))
             {
-                doDamage(ens.meleeDamage, pcs.mDmgRes, ens.trueDmgPC * Rdctn, ens.criticalStrikePC, true);
+                doDamage(ens.meleeDamage, pcs.mDmgRes, ens.trueDmgPC * Rdctn, ens.criticalStrikePC, ens.criticalMultiplier, true);
             }
         }
     }
-    private void doDamage(float damage, float res, float truePercent, float criticalStrikeChance, bool playertake = false)
+    private void doDamage(float damage, float res, float truePercent, float criticalStrikeChance, float criticalMultiplier, bool playertake = false)
     {
-        var dmg = (damage/100*(100-truePercent)/100*(100-res)) + (damage/100*truePercent) * criticalStrikeChance;
+        damage += Random.Range(0f, 3f);
+        float critical = Random.Range(0, 100) < criticalStrikeChance ? criticalMultiplier : 1f;
+        float dmg = damage/100*(100-truePercent)/100*(100-res) + (damage * critical) + (damage/100*truePercent);
         if (playertake)
         {
             pcs.takeDamage(dmg);
@@ -55,6 +59,7 @@ public class DamageCollider : MonoBehaviour
         {
             ens.takeDamage(dmg);
         }
-        DamageNums.CreateDamageText(dmg.ToString(), transform.position);
+        int d = (int)dmg;
+        DamageNums.CreateDamageText(d.ToString(), transform.position);
     }
 }

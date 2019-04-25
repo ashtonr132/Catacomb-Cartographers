@@ -36,13 +36,13 @@ public class Spawner : MonoBehaviour
     internal IEnumerator setStats(Enemy e, int recs)
     {
         e.name = e.type + " " + currentCount.ToString();
-        float diff = LevelGen.diff;
+        float diff = LevelGen.diff + Random.Range(-LevelGen.diff/15, LevelGen.diff/15);
         switch (e.type)
         {
             case Enemy.EnemyType.AxeBandit:
 
                 e.maxHealth = 80 * diff;
-                e.meleeDamage = 0.8f * diff;
+                e.meleeDamage = 7f * diff;
                 e.pDmgRes = 1.8f * diff;
                 e.mDmgRes = 1.2f * diff;
 
@@ -53,7 +53,7 @@ public class Spawner : MonoBehaviour
 
                 e.maxHealth = 70 * diff;
                 e.projSpeed = 8 * diff;
-                e.projDamage = 0.4f * diff;
+                e.projDamage = 4 * diff;
                 e.pDmgRes = 1.0f * diff;
                 e.mDmgRes = 1.2f * diff;
 
@@ -75,7 +75,7 @@ public class Spawner : MonoBehaviour
 
                 e.maxHealth = 60 * diff;
                 e.projSpeed = 12 * diff;
-                e.projDamage = 0.75f * diff;
+                e.projDamage = 7f * diff;
                 e.mDmgRes = -15f * diff;
 
                 e.projDuration = 7;
@@ -86,7 +86,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Goblin:
 
                 e.maxHealth = 80 * diff;
-                e.meleeDamage = 0.25f * diff;
+                e.meleeDamage = 8f * diff;
                 e.pDmgRes = 1.5f * diff;
                 e.mDmgRes = 1.5f * diff;
 
@@ -97,7 +97,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Kobold:
 
                 e.maxHealth = 80 * diff;
-                e.meleeDamage = 1 * diff;
+                e.meleeDamage = 8 * diff;
                 e.pDmgRes = 1.7f * diff;
                 e.mDmgRes = 1.3f * diff;
                 
@@ -107,7 +107,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Minataur:
 
                 e.maxHealth = 120 * diff;
-                e.meleeDamage = 1.25f * diff;
+                e.meleeDamage = 12.5f * diff;
                 e.pDmgRes = 6.5f * diff;
                 e.mDmgRes = 5.5f * diff;
                 
@@ -117,7 +117,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Oculothorax:
 
                 e.maxHealth = 30 * diff;
-                e.meleeDamage = 1.15f * diff;
+                e.meleeDamage = 11.5f * diff;
                 e.pDmgRes = 1.5f * diff;
                 e.mDmgRes = -1.0f * diff;
                 
@@ -127,7 +127,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Ogre:
 
                 e.maxHealth = 150 * diff;
-                e.meleeDamage = 0.5f;
+                e.meleeDamage = 6 * diff;
                 e.pDmgRes = -3 * diff;
                 e.mDmgRes = 8 * diff;
 
@@ -138,7 +138,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Slime:
 
                 e.maxHealth = 50 * diff;
-                e.meleeDamage = 1 * diff;
+                e.meleeDamage = 6 * diff;
                 e.pDmgRes = 2.5f * diff;
                 e.mDmgRes = 2.5f * diff;
                 
@@ -174,7 +174,7 @@ public class Spawner : MonoBehaviour
             case Enemy.EnemyType.Mimic:
 
                 e.maxHealth = 100 * diff;
-                e.meleeDamage = 0.9f * diff;
+                e.meleeDamage = 9 * diff;
 
                 e.pDmgRes = 99.99f;
                 e.visionRange = 100;

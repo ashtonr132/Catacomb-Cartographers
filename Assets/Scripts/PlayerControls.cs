@@ -47,7 +47,6 @@ public class PlayerControls : MonoBehaviour
         lastHealth = currentHealth;
         if (an.GetBool("Moving"))
         {
-            
             GetComponent<SpriteRenderer>().flipX = transform.parent.GetComponent<NavMeshAgent>().destination.x >= transform.position.x ? false : true; //side facing
         }
         else

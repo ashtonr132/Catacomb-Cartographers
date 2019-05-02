@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     private readonly float SmoothTime = 0.15f;
     private Vector3 CurrentVelocity = Vector3.zero;
+    internal static Vector3 offset;
     private GameObject player;
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class CameraFollow : MonoBehaviour
                 targPos.y = transform.position.y;
                 transform.position = Vector3.SmoothDamp(transform.position, targPos, ref CurrentVelocity, SmoothTime);
                 transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
+                offset = Camera.main.WorldToScreenPoint(player.transform.position - transform.position);
             }
             else
             {

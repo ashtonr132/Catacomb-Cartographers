@@ -6,6 +6,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField]
     internal GameObject[] Enemies, Projectiles;
+    [SerializeField]
+    internal GameObject UIOverlay;
     int spawnCap = 5, currentCount = 0;
     int? type = null;
 
@@ -13,7 +15,7 @@ public class Spawner : MonoBehaviour
     {
         if (type == null)
         {
-            type = Random.Range(0, Enemies.Length - 1);
+            type = Random.Range(0, Enemies.Length - 2);
             transform.name = "Spawner " + Enemies[type.Value].name;
         }
         for (int i = 0; i < spawn;)
@@ -25,17 +27,18 @@ public class Spawner : MonoBehaviour
                 e = e.transform.GetChild(0).gameObject;
                 e.transform.rotation = Quaternion.Euler(90, 0, 0);
                 e.AddComponent<Enemy>().type = (Enemy.EnemyType)System.Enum.GetValues(typeof(Enemy.EnemyType)).GetValue(type.Value);
+
                 StartCoroutine(setStats(e.GetComponent<Enemy>(), 0));
                 i++;
                 currentCount++;
             }
         }
-                
     }
 
     internal IEnumerator setStats(Enemy e, int recs)
     {
         e.name = e.type + " " + currentCount.ToString();
+        e.UIOverlay = Instantiate(UIOverlay, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, GameObject.Find("Canvas").transform);
         float diff = LevelGen.diff + Random.Range(-LevelGen.diff/15, LevelGen.diff/15);
         switch (e.type)
         {
@@ -56,8 +59,9 @@ public class Spawner : MonoBehaviour
                 e.projDamage = 4 * diff;
                 e.pDmgRes = 1.0f * diff;
                 e.mDmgRes = 1.2f * diff;
+                e.aggressiveness = 45;
 
-                e.visionRange = 7;
+                e.visionRange = 2;
                 e.moveSpeed = 4;
                 break;
 
@@ -77,9 +81,10 @@ public class Spawner : MonoBehaviour
                 e.projSpeed = 12 * diff;
                 e.projDamage = 7f * diff;
                 e.mDmgRes = -15f * diff;
+                e.aggressiveness = 55;
 
                 e.projDuration = 7;
-                e.visionRange = 8;
+                e.visionRange = 3;
                 e.moveSpeed = 6;
                 break;
 
@@ -89,8 +94,9 @@ public class Spawner : MonoBehaviour
                 e.meleeDamage = 8f * diff;
                 e.pDmgRes = 1.5f * diff;
                 e.mDmgRes = 1.5f * diff;
+                e.aggressiveness = 60;
 
-                e.visionRange = 4;
+                e.visionRange = 1.25f;
                 e.moveSpeed = 8;
                 break;
 
@@ -110,7 +116,8 @@ public class Spawner : MonoBehaviour
                 e.meleeDamage = 12.5f * diff;
                 e.pDmgRes = 6.5f * diff;
                 e.mDmgRes = 5.5f * diff;
-                
+                e.aggressiveness = 70;
+
                 e.moveSpeed = 3;
                 break;
 
@@ -120,7 +127,8 @@ public class Spawner : MonoBehaviour
                 e.meleeDamage = 11.5f * diff;
                 e.pDmgRes = 1.5f * diff;
                 e.mDmgRes = -1.0f * diff;
-                
+                e.aggressiveness = 80;
+
                 e.moveSpeed = 12;
                 break;
 
@@ -131,7 +139,7 @@ public class Spawner : MonoBehaviour
                 e.pDmgRes = -3 * diff;
                 e.mDmgRes = 8 * diff;
 
-                e.visionRange = 3;
+                e.visionRange = 0.8f;
                 e.moveSpeed = 2;
                 break;
 
@@ -141,15 +149,17 @@ public class Spawner : MonoBehaviour
                 e.meleeDamage = 6 * diff;
                 e.pDmgRes = 2.5f * diff;
                 e.mDmgRes = 2.5f * diff;
-                
+                e.aggressiveness = 35;
+
                 e.moveSpeed = 4;
                 break;
 
             case Enemy.EnemyType.Sorcerer:
 
                 e.maxHealth = 100 * diff;
+                e.aggressiveness = 0;
 
-                e.visionRange = 12;
+                e.visionRange = 2.5f;
                 e.moveSpeed = 5;
                 break;
 
@@ -179,6 +189,8 @@ public class Spawner : MonoBehaviour
                 e.pDmgRes = 99.99f;
                 e.visionRange = 100;
                 e.moveSpeed = 6;
+                e.aggressiveness = 100;
+
                 break;
 
             default:

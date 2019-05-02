@@ -128,6 +128,8 @@ MonoBehaviour:
   - {fileID: 4310463006260131628, guid: 468935af74266ce4797318528197c9bc, type: 3}
   - {fileID: 2949426294955124574, guid: 22817f33a3d8bdc41b836eb11fd35e3a, type: 3}
   - {fileID: 3565531075406055113, guid: 5f627875045f0df458c32d0a5d18aad5, type: 3}
+  UIOverlay: {fileID: 3378773716099020409, guid: 878029318fe1f494bb3305ccbd67d6fd,
+    type: 3}
 --- !u!65 &6328585072474119109
 BoxCollider:
   m_ObjectHideFlags: 0

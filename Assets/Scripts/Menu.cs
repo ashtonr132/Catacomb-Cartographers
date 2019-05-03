@@ -48,7 +48,7 @@ public class Menu : MonoBehaviour
         EnableSubMenu(); //disable all sub menues after listeners setup
     }
 
-    private void EnableSubMenu(int? Menu = null)
+    internal void EnableSubMenu(int? Menu = null)
     {
         foreach (GameObject g in MenuButtons)
         {

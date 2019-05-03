@@ -88,7 +88,8 @@ public class GameFiles : MonoBehaviour
 public class SaveData
 {
     internal string Tag;
-    internal float Difficulty = 1, Currency = 0, Experience = 0;
+    internal float Difficulty = 1, Currency = 0;
+    internal int Experience = 0;
     internal int? Seed = null;
     internal int[] Seeds;
 }

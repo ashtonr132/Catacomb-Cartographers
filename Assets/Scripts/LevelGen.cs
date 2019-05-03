@@ -39,7 +39,7 @@ public class LevelGen : MonoBehaviour
     internal void InitLevel(float Size, int? Seed, float difficulty = 1, bool isSkirmish = false)
     {
         diff = difficulty;
-        if (Size > 50)
+        if (Size > 50) //level size cap
         {
             levelSize = (int)Size;
         }
@@ -86,7 +86,7 @@ public class LevelGen : MonoBehaviour
                         GameObject Spawner = Instantiate(portal, pos, Quaternion.identity, transform);
                         Spawner.transform.rotation = Quaternion.Euler(90, 0, 0);
                         Spawners.Add(Spawner);
-                        StartCoroutine(Spawner.GetComponent<Spawner>().startSpawn(1, 1));
+                        StartCoroutine(Spawner.GetComponent<Spawner>().startSpawn(1, 5));
                         i++;
                     }
                 }
@@ -97,7 +97,8 @@ public class LevelGen : MonoBehaviour
             }
         }
     }
-    private void LevelFill()
+
+    private void LevelFill() //instatiates and places interactables
     {
         Vector4 t = new Vector4();
         float min = float.MaxValue, max = float.MinValue;
@@ -139,10 +140,16 @@ public class LevelGen : MonoBehaviour
     private void BuildMap()
     {
         useRandomSeed = seed == null ? true : false; //is this script accessed for a random level or a seeded one?
-        GenMap();
+        grid = new bool[levelSize, levelSize];
+        FillMap();
+
+        for (int i = 0; i < noiseRounds; i++)
+        {
+            ReduceNoise(i, 4, 4);
+        }
         RemoveMinor(GetAreas(true), MinMaxSize);
         AddPaths(GetAreas(false), MinMaxSize);
-        if (grid != null)
+        if (grid != null) //generate and assign meshes
         {
             gameObject.AddComponent<MeshCollider>().sharedMesh = GetComponent<MeshGen>().GenerateMesh(grid, 1f);
             GetComponent<MeshFilter>().mesh = GetComponent<MeshCollider>().sharedMesh;
@@ -163,18 +170,7 @@ public class LevelGen : MonoBehaviour
         }
     }
 
-    private void GenMap()
-    {
-        grid = new bool[levelSize, levelSize];
-        FillMap();
-
-        for (int i = 0; i < noiseRounds; i++)
-        {
-            ReduceNoise(i, 4, 4);
-        }
-    }
-
-    private void RemoveMinor(List<Area> areas, int minWalls) //removes small pillar areas to leave more open larger areas
+    private void RemoveMinor(List<Area> areas, int minWalls) //removes smaller areas to leave more open larger areas
     {
         for (int i = 0; i < areas.Count; i++)
         {

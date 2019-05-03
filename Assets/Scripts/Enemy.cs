@@ -30,11 +30,10 @@ public class Enemy : MonoBehaviour
     {
         foreach (Transform c in transform)
         {
-            if (c.name.Contains("MeleeAttackCollider"))
+            if (c.name.Contains("Melee"))
             {
                 isRanged = false;
-                c.localScale *= 1.35f;
-                meleeAttackRange = c.GetComponent<Collider>().bounds.extents.x;
+                meleeAttackRange = 1;
                 break;
             }
             isRanged = true;
@@ -50,6 +49,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        gameObject.GetComponent<SpriteRenderer>().flipX = Player.transform.position.x > transform.position.x ? true : false;
         if (UIOverlay != null)
         {
             UIOverlay.transform.position = //-CameraFollow.offset + 
@@ -64,7 +64,10 @@ public class Enemy : MonoBehaviour
         {
             transform.position = transform.parent.position;
         }
-        an.SetBool("Move", true);
+        if (name.Contains("Sorcerer"))
+        {
+            an.SetBool("Move", true);
+        }
         if (actionComplete)
         {
             state = determineState();
@@ -78,9 +81,8 @@ public class Enemy : MonoBehaviour
 
                 case EnemyState.Chase:
                     actionComplete = false;
-
                     an.SetBool("Move", true);
-                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(Player.GetComponentInParent<NavMeshAgent>().destination);
+                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(Player.transform.position);
                     break;
 
                 case EnemyState.Flee:
@@ -94,6 +96,7 @@ public class Enemy : MonoBehaviour
                     actionComplete = false;
 
                     an.SetBool("Move", true);
+
                     transform.parent.GetComponent<NavMeshAgent>().SetDestination(transform.parent.parent.position);
                     break;
 
@@ -101,20 +104,13 @@ public class Enemy : MonoBehaviour
                     actionComplete = false;
 
                     an.SetBool("Move", true);
+
                     newDest(0);
                     actionComplete = false;
                     break;
 
                 default:
-                    try
-                    {
-                        an.SetBool("Move", false);
-                        an.SetTrigger("Idle");
-                    }
-                    catch (System.Exception)
-                    {
-                        throw;
-                    }
+                    an.SetBool("Move", false);
                     actionComplete = false;
                     StartCoroutine(Idle(Random.Range(3, 5)));
                     break;
@@ -125,7 +121,7 @@ public class Enemy : MonoBehaviour
             if (transform.parent.GetComponent<NavMeshAgent>().path.status == NavMeshPathStatus.PathComplete && state != EnemyState.Attack && state != EnemyState.Idle)
             {
                 actionComplete = true;
-                an.SetBool("Move", false);
+                    an.SetBool("Move", false);
             }
         }
     }
@@ -269,7 +265,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         actionComplete = true;
         GameObject nproj = Instantiate(Projectile, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
-        nproj.GetComponent<Rigidbody>().velocity = (transform.position - Player.transform.position).normalized * projSpeed;
+        nproj.GetComponent<Rigidbody>().velocity = (Player.transform.position - transform.position).normalized * projSpeed;
         Destroy(nproj, projDuration);
     }
 
@@ -289,12 +285,15 @@ public class Enemy : MonoBehaviour
             try
             {
                 GetComponent<Animator>().SetTrigger("Die");
-                Destroy(gameObject.transform.parent, 3);
             }
             catch (System.Exception)
             {
+
                 throw; //animation missing ignore indev
             }
+            GameFiles.saveData.Experience++;
+            Destroy(UIOverlay.gameObject);
+            Destroy(gameObject.transform.parent.gameObject, 3);
         }
     }
     internal IEnumerator Idle(float wait)

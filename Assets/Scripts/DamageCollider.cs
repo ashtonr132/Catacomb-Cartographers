@@ -25,24 +25,24 @@ public class DamageCollider : MonoBehaviour
         {
             if (other.name.Contains("Proj")) //player proj hits this enemy
             {
-                doDamage(pcs.projDamage, ens.pDmgRes, pcs.trueDamagePC, pcs.criticalStrikePC, pcs.criticalMultiplier * Rdctn);
+                doDamage(pcs.projDamage * 15f, ens.pDmgRes, pcs.trueDamagePC, pcs.criticalStrikePC, pcs.criticalMultiplier * Rdctn);
                 Destroy(other.transform.parent.gameObject);
             }
             else if (other.name.Contains("Melee")) //player melee hits this enemy
             {
-                doDamage(pcs.meleeDamage, ens.mDmgRes, pcs.trueDamagePC * Rdctn, pcs.criticalStrikePC, pcs.criticalMultiplier);
+                doDamage(pcs.meleeDamage * 15f, ens.mDmgRes, pcs.trueDamagePC * Rdctn, pcs.criticalStrikePC, pcs.criticalMultiplier);
             }
         }
         else if(transform.tag.Contains("Player") && other.transform.tag.Contains("Enemy")) //enemy hit this player
         {
             if (other.name.Contains("Proj"))
             {
-                doDamage(ens.projDamage, pcs.pDmgRes, ens.trueDmgPC, ens.criticalStrikePC, ens.criticalMultiplier * Rdctn, true);
+                doDamage(ens.projDamage * 3, pcs.pDmgRes, ens.trueDmgPC, ens.criticalStrikePC, ens.criticalMultiplier * Rdctn, true);
                 Destroy(other.transform.parent.gameObject);
             }
             else if (other.name.Contains("Melee"))
             {
-                doDamage(ens.meleeDamage, pcs.mDmgRes, ens.trueDmgPC * Rdctn, ens.criticalStrikePC, ens.criticalMultiplier, true);
+                doDamage(ens.meleeDamage * 3, pcs.mDmgRes, ens.trueDmgPC * Rdctn, ens.criticalStrikePC, ens.criticalMultiplier, true);
             }
         }
     }

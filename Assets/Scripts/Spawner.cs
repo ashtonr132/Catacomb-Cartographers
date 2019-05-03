@@ -5,10 +5,10 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField]
-    internal GameObject[] Enemies, Projectiles;
+    internal GameObject[] Enemies, Projectiles, Currency;
     [SerializeField]
     internal GameObject UIOverlay;
-    int spawnCap = 5, currentCount = 0;
+    int spawnCap = 5, currentCount = 0, health = 3;
     int? type = null;
 
     internal IEnumerator startSpawn(float wait, int spawn)
@@ -206,6 +206,21 @@ public class Spawner : MonoBehaviour
                 }
                 Debug.Log("enemy spawned with no type persists");
                 break;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (health > 0 && other.transform.name.Contains("Melee") && other.transform.tag.Contains("Player") && !transform.name.Contains("Portal"))
+        {
+            //health--;
+            if(health <= 0)
+            {
+                //GameFiles.saveData.Experience += 5;
+                //StopCoroutine("startSpawn");
+                //Destroy(gameObject);
+            }
+
         }
     }
 }

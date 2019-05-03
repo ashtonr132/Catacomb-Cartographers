@@ -10,8 +10,8 @@ public class PlayerControls : MonoBehaviour
     internal float playerSpeed = 3;
     private Animator an;
 
-    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f;
-    internal static int maxHealth = 100;
+    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f, pcShroud;
+    internal static int maxHealth = 100, experience;
 
     [SerializeField]
     GameObject Arrow;
@@ -26,11 +26,19 @@ public class PlayerControls : MonoBehaviour
         an = transform.GetComponent<Animator>();
         canvas = GameObject.Find("Canvas");
         canvas.transform.GetChild(1).gameObject.SetActive(true);
-	}
+        canvas.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<Text>().text = "Alpha Area";
+        canvas.transform.GetChild(1).GetChild(1).GetChild(1).GetComponent<Text>().text = "Difficulty : " + GameFiles.saveData.Difficulty.ToString();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+                canvas.GetComponentInChildren<Menu>().inGameSettings();
+            canvas.transform.GetChild(1).gameObject.SetActive(false);
+           
+        }
         if (transform.parent.rotation != Quaternion.identity) //cleanups
         {
             transform.parent.rotation = Quaternion.identity;
@@ -39,10 +47,8 @@ public class PlayerControls : MonoBehaviour
         {
             transform.position = transform.parent.position;
         }
-        if (currentHealth < lastHealth)
-        {
             updateUI(hp: currentHealth);
-        }
+        
 
         lastHealth = currentHealth;
         if (an.GetBool("Moving"))
@@ -115,19 +121,19 @@ public class PlayerControls : MonoBehaviour
                 Vector3 directionV = Vector3.zero;
                 if (Input.GetKey(KeyCode.W))
                 {
-                    directionV.z++;
+                    directionV.z += 0.2f;
                 }
                 if (Input.GetKey(KeyCode.S))
                 {
-                    directionV.z--;
+                    directionV.z -= 0.2f;
                 }
                 if (Input.GetKey(KeyCode.D))
                 {
-                    directionV.x++;
+                    directionV.x += 0.2f;
                 }
                 if (Input.GetKey(KeyCode.A))
                 {
-                    directionV.x--;
+                    directionV.x -= 0.2f;
                 }
                 if (Physics.Raycast(transform.parent.position + directionV, Vector3.down, out hit) && hit.transform.name.Contains("Level"))
                 {
@@ -187,6 +193,7 @@ public class PlayerControls : MonoBehaviour
     {
         an.SetBool("Use", false);
     }
+
     internal void updateUI(float? hp = null, float? rp = null)
     {
         if (hp != null)
@@ -197,6 +204,8 @@ public class PlayerControls : MonoBehaviour
         {
             canvas.transform.GetChild(1).GetChild(0).GetChild(1).GetComponent<Slider>().value = rp.Value;
         }
+        canvas.transform.GetChild(1).GetChild(1).GetChild(2).GetComponent<Text>().text = "Mapped : " + pcShroud.ToString();
+        canvas.transform.GetChild(1).GetChild(0).GetChild(2).GetChild(0).GetComponent<Text>().text = "EXP : " + GameFiles.saveData.Experience.ToString();
     }
     internal void takeDamage(float dmg)
     {

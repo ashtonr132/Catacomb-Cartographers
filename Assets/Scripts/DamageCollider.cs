@@ -48,6 +48,7 @@ public class DamageCollider : MonoBehaviour
             }
         }
     }
+
     private void doDamage(float damage, float res, float truePercent, float criticalStrikeChance, float criticalMultiplier, bool playertake = false)
     {
         damage += Random.Range(0f, 3f);
@@ -62,6 +63,5 @@ public class DamageCollider : MonoBehaviour
             ens.takeDamage(dmg);
         }
         int d = (int)dmg;
-        DamageNums.CreateDamageText(d.ToString(), transform.position);
     }
 }

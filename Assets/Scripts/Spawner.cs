@@ -61,7 +61,7 @@ public class Spawner : MonoBehaviour
                 e.mDmgRes = 1.2f * diff;
                 e.aggressiveness = 45;
 
-                e.visionRange = 2;
+                e.visionRange = 1.5f;
                 e.moveSpeed = 4;
                 break;
 
@@ -84,7 +84,7 @@ public class Spawner : MonoBehaviour
                 e.aggressiveness = 55;
 
                 e.projDuration = 7;
-                e.visionRange = 3;
+                e.visionRange = 2;
                 e.moveSpeed = 6;
                 break;
 
@@ -95,8 +95,6 @@ public class Spawner : MonoBehaviour
                 e.pDmgRes = 1.5f * diff;
                 e.mDmgRes = 1.5f * diff;
                 e.aggressiveness = 60;
-
-                e.visionRange = 1.25f;
                 e.moveSpeed = 8;
                 break;
 
@@ -139,7 +137,7 @@ public class Spawner : MonoBehaviour
                 e.pDmgRes = -3 * diff;
                 e.mDmgRes = 8 * diff;
 
-                e.visionRange = 0.8f;
+                e.visionRange = 0.5f;
                 e.moveSpeed = 2;
                 break;
 
@@ -159,7 +157,7 @@ public class Spawner : MonoBehaviour
                 e.maxHealth = 100 * diff;
                 e.aggressiveness = 0;
 
-                e.visionRange = 2.5f;
+                e.visionRange = 3f;
                 e.moveSpeed = 5;
                 break;
 

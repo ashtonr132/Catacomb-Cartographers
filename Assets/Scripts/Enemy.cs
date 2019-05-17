@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
 
     public EnemyState state = EnemyState.Wander;
     public EnemyType type = EnemyType.unassigned;
-    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 1, projDamage = 5, meleeDamage = 10, aggressiveness = 50, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5, criticalMultiplier = 1.2f;
+    internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 1.25f, projDamage = 5, meleeDamage = 10, aggressiveness = 50, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5, criticalMultiplier = 1.2f;
     internal GameObject Projectile = null, UIOverlay;
     private bool isRanged = false, isIdle = false;
     internal static GameObject Player;
@@ -187,7 +187,7 @@ public class Enemy : MonoBehaviour
         else
         {
             dist = Vector2.Distance(transform.parent.position, transform.parent.parent.position);
-            if (dist > leashDist && Random.value < 0.66f)
+            if (dist > leashDist)
             {
                 return EnemyState.Return;
             }
@@ -204,6 +204,7 @@ public class Enemy : MonoBehaviour
 
     internal void AttackColl()
     {
+        PlayerControls.recentHits += 1;
         if (transform.parent.rotation != Quaternion.identity) //cleanups
         {
             transform.parent.rotation = Quaternion.identity;
@@ -239,18 +240,22 @@ public class Enemy : MonoBehaviour
         {
             foreach (GameObject proj in GetComponentInParent<Spawner>().Projectiles)
             {
-                var s = proj.name.Substring(proj.name.ToCharArray().Length - 4);
-                Debug.Log(proj.name);
-                Debug.Log(s);
-                if (transform.name.Contains(s))
+                var s = proj.name.ToCharArray();
+                string st = string.Empty;
+                for (int i = 0; i < s.Length - 4; i++)
+                {
+                    st.Insert(0, s[i].ToString());
+                }
+                if (transform.name.Contains(st))
                 {
                     Projectile = proj;
                 }
             }
         }
         yield return new WaitForSeconds(0.1f);
-        GameObject nproj = Instantiate(Projectile, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
+        GameObject nproj = Instantiate(Projectile, transform.position, Quaternion.FromToRotation(Player.transform.position, transform.position), transform);
         nproj.GetComponent<Rigidbody>().velocity = (Player.transform.position - transform.position).normalized * projSpeed;
+        nproj.transform.Rotate(90, -90, 0);
         Destroy(nproj, projDuration);
     }
 
@@ -279,6 +284,10 @@ public class Enemy : MonoBehaviour
             GameFiles.saveData.Experience++;
             Destroy(UIOverlay.gameObject);
             Destroy(gameObject.transform.parent.gameObject, 3);
+        }
+        else
+        {
+            DamageNums.CreateDamageText(((int)dmg).ToString(), transform.position);
         }
     }
     internal IEnumerator Idle(float wait)

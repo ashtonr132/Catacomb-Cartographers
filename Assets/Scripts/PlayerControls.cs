@@ -12,7 +12,7 @@ public class PlayerControls : MonoBehaviour
 
     internal float currentHealth, lastHealth, projSpeed = 2, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f, pcShroud;
     internal static int maxHealth = 1000, experience;
-
+    internal static float recentHits = 0;
     [SerializeField]
     GameObject Arrow;
     GameObject canvas;
@@ -33,6 +33,10 @@ public class PlayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (recentHits > 0)
+        {
+            recentHits -= Time.deltaTime;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             canvas.GetComponentInChildren<Menu>().inGameSettings();
@@ -207,11 +211,18 @@ public class PlayerControls : MonoBehaviour
     }
     internal void takeDamage(float dmg)
     {
-        an.SetTrigger("Hurt");
-        currentHealth -= dmg;
-        if (currentHealth <= 0)
+        if (!an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Hurt"))
         {
-            an.SetTrigger("Die");
+            an.SetTrigger("Hurt");
+            currentHealth -= dmg;
+            if (currentHealth <= 0)
+            {
+                an.SetTrigger("Die");
+            }
+            else
+            {
+                DamageNums.CreateDamageText(((int)dmg).ToString(), transform.position);
+            }
         }
     }
     private IEnumerator MeleeAttack()

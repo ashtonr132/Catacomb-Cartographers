@@ -212,10 +212,13 @@ public class Spawner : MonoBehaviour
         if (health > 0 && other.transform.name.Contains("Melee") && other.transform.tag.Contains("Player") && !transform.name.Contains("Portal"))
         {
             health--;
-            if(health <= 0)
+            DamageNums.CreateDamageText(1.ToString(), transform.position);
+            if (health <= 0)
             {
                 GameFiles.saveData.Experience += 5;
                 StopCoroutine("startSpawn");
+                PlayerControls.spawners--;
+                PlayerControls.updateuiinfo = true;
                 Destroy(gameObject);
             }
 

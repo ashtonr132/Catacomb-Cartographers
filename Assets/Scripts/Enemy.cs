@@ -49,66 +49,69 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        gameObject.GetComponent<SpriteRenderer>().flipX = Player.transform.position.x > transform.position.x ? true : false;
-        if (UIOverlay != null)
+        if (currentHealth > 0)
         {
-            UIOverlay.transform.position = //-CameraFollow.offset + 
-                Camera.main.WorldToScreenPoint(transform.parent.position + transform.parent.up);
-            UIOverlay.GetComponent<Text>().text = "State = " + state.ToString() + "\nHealth = " + currentHealth;
-        }
-        if (transform.parent.rotation != Quaternion.identity) //cleanups
-        {
-            transform.parent.rotation = Quaternion.identity;
-        }
-        if (transform.position != transform.parent.position)
-        {
-            transform.position = transform.parent.position;
-        }
-        if (name.Contains("Sorcerer"))
-        {
-            an.SetBool("Move", true);
-        }
-        if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle") && !isIdle)
-        {
-            state = determineState();
-            switch (state)
+            gameObject.GetComponent<SpriteRenderer>().flipX = Player.transform.position.x > transform.position.x ? true : false;
+            if (UIOverlay != null)
             {
-                case EnemyState.Attack:
-                    an.SetBool("Move", false);
-                    an.SetTrigger("Attack");
-                    break;
-
-                case EnemyState.Chase:
-                    an.SetBool("Move", true);
-                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(Player.transform.position);
-                    break;
-
-                case EnemyState.Flee:
-                    an.SetBool("Move", true);
-                    transform.parent.GetComponent<NavMeshAgent>().SetDestination((transform.position - Player.transform.position).normalized * Random.Range(1.2f, 1.5f));
-                    break;
-
-                case EnemyState.Return:
-                    an.SetBool("Move", true);
-                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(transform.parent.parent.position);
-                    break;
-
-                case EnemyState.Wander:
-                    an.SetBool("Move", true);
-                    newDest(0);
-                    break;
-
-                default:
-                    an.SetBool("Move", false);
-                    StartCoroutine(Idle(Random.Range(3, 5)));
-                    break;
+                UIOverlay.transform.position = //-CameraFollow.offset + 
+                    Camera.main.WorldToScreenPoint(transform.parent.position + transform.parent.up);
+                UIOverlay.GetComponent<Text>().text = "State = " + state.ToString() + "\nHealth = " + currentHealth;
             }
-        }
-        else
-        {
-            if (transform.parent.GetComponent<NavMeshAgent>().path.status == NavMeshPathStatus.PathComplete && state != EnemyState.Attack && state != EnemyState.Idle)
+            if (transform.parent.rotation != Quaternion.identity) //cleanups
             {
-                an.SetBool("Move", false);
+                transform.parent.rotation = Quaternion.identity;
+            }
+            if (transform.position != transform.parent.position)
+            {
+                transform.position = transform.parent.position;
+            }
+            if (name.Contains("Sorcerer"))
+            {
+                an.SetBool("Move", true);
+            }
+            if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle") && !isIdle)
+            {
+                state = determineState();
+                switch (state)
+                {
+                    case EnemyState.Attack:
+                        an.SetBool("Move", false);
+                        an.SetTrigger("Attack");
+                        break;
+
+                    case EnemyState.Chase:
+                        an.SetBool("Move", true);
+                        transform.parent.GetComponent<NavMeshAgent>().SetDestination(Player.transform.position);
+                        break;
+
+                    case EnemyState.Flee:
+                        an.SetBool("Move", true);
+                        transform.parent.GetComponent<NavMeshAgent>().SetDestination((transform.position - Player.transform.position).normalized * Random.Range(1.2f, 1.5f));
+                        break;
+
+                    case EnemyState.Return:
+                        an.SetBool("Move", true);
+                        transform.parent.GetComponent<NavMeshAgent>().SetDestination(transform.parent.parent.position);
+                        break;
+
+                    case EnemyState.Wander:
+                        an.SetBool("Move", true);
+                        newDest(0);
+                        break;
+
+                    default:
+                        an.SetBool("Move", false);
+                        StartCoroutine(Idle(Random.Range(3, 5)));
+                        break;
+                }
+            }
+            else
+            {
+                if (transform.parent.GetComponent<NavMeshAgent>().path.status == NavMeshPathStatus.PathComplete && state != EnemyState.Attack && state != EnemyState.Idle)
+                {
+                    an.SetBool("Move", false);
+                }
             }
         }
     }
@@ -281,7 +284,7 @@ public class Enemy : MonoBehaviour
 
                 throw; //animation missing ignore indev
             }
-            GameFiles.saveData.Experience++;
+            GameFiles.saveData.Experience += 3;
             Destroy(UIOverlay.gameObject);
             Destroy(gameObject.transform.parent.gameObject, 3);
         }

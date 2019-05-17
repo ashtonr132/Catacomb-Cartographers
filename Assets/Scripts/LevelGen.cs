@@ -9,7 +9,7 @@ using System.Linq;
 public class LevelGen : MonoBehaviour
 {
     private int MinMaxSize = 15, noiseRounds = 4, wallHeight = 1;
-    internal static int levelSize = 50;
+    internal static int levelSize = 35;
     private int? seed;
     internal bool[,] grid;
     
@@ -26,7 +26,7 @@ public class LevelGen : MonoBehaviour
     PhysicMaterial wallMat;
 
     [SerializeField]
-    GameObject portal, player;
+    GameObject portal, player, ShroudTile;
     private GameObject portal1, portal2;
     private List<GameObject> Spawners;
     internal static float diff;
@@ -39,19 +39,32 @@ public class LevelGen : MonoBehaviour
     internal void InitLevel(float Size, int? Seed, float difficulty = 1, bool isSkirmish = false)
     {
         diff = difficulty;
-        if (Size > 50) //level size cap
+        if (Size > 35 && Size < 150) //level size cap
         {
             levelSize = (int)Size;
         }
         seed = Seed;
         BuildMap();
+        AddShroud();
         LevelFill();
         SpawnEnemies(Size, difficulty, isSkirmish);
     }
 
+    private void AddShroud()
+    {
+        for (int x = 0; x < grid.GetLength(0); x++)
+        {
+            for (int y = 0; y < grid.GetLength(1); y++)
+            {
+                GameObject newTile = Instantiate(ShroudTile, new Vector3(x -levelSize/2, 1, y -levelSize/2), Quaternion.identity, transform.GetChild(2));
+            }
+        }
+    }
+
     private void SpawnEnemies(float Size, float difficulty, bool isSkirmish = false)
     {
-        int maxSpawners = 11 + (int)difficulty;
+        float maxSpawners = (11 + difficulty)/35*levelSize;
+        PlayerControls.spawners = (int)maxSpawners;
         var maxRounds = 3000;
         int i = 0;
         for (;;)

@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     public EnemyType type = EnemyType.unassigned;
     internal float maxHealth = 100, currentHealth, projSpeed = 10, projDuration = 10, visionRange = 1, projDamage = 5, meleeDamage = 10, aggressiveness = 50, mDmgRes = 1, pDmgRes = 1, moveSpeed = 1, trueDmgPC = 0, criticalStrikePC = 5, criticalMultiplier = 1.2f;
     internal GameObject Projectile = null, UIOverlay;
-    private bool isRanged = false, actionComplete = false;
+    private bool isRanged = false, isIdle = false;
     internal static GameObject Player;
     internal float meleeAttackRange = float.MinValue, leashDist = LevelGen.levelSize / 12, lastHealth;
     private Animator an;
@@ -68,50 +68,38 @@ public class Enemy : MonoBehaviour
         {
             an.SetBool("Move", true);
         }
-        if (actionComplete)
+        if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle") && !isIdle)
         {
             state = determineState();
             switch (state)
             {
                 case EnemyState.Attack:
-                    actionComplete = false;
                     an.SetBool("Move", false);
                     an.SetTrigger("Attack");
                     break;
 
                 case EnemyState.Chase:
-                    actionComplete = false;
                     an.SetBool("Move", true);
                     transform.parent.GetComponent<NavMeshAgent>().SetDestination(Player.transform.position);
                     break;
 
                 case EnemyState.Flee:
-                    actionComplete = false;
-
                     an.SetBool("Move", true);
                     transform.parent.GetComponent<NavMeshAgent>().SetDestination((transform.position - Player.transform.position).normalized * Random.Range(1.2f, 1.5f));
                     break;
 
                 case EnemyState.Return:
-                    actionComplete = false;
-
                     an.SetBool("Move", true);
-
                     transform.parent.GetComponent<NavMeshAgent>().SetDestination(transform.parent.parent.position);
                     break;
 
                 case EnemyState.Wander:
-                    actionComplete = false;
-
                     an.SetBool("Move", true);
-
                     newDest(0);
-                    actionComplete = false;
                     break;
 
                 default:
                     an.SetBool("Move", false);
-                    actionComplete = false;
                     StartCoroutine(Idle(Random.Range(3, 5)));
                     break;
             }
@@ -120,8 +108,7 @@ public class Enemy : MonoBehaviour
         {
             if (transform.parent.GetComponent<NavMeshAgent>().path.status == NavMeshPathStatus.PathComplete && state != EnemyState.Attack && state != EnemyState.Idle)
             {
-                actionComplete = true;
-                    an.SetBool("Move", false);
+                an.SetBool("Move", false);
             }
         }
     }
@@ -181,7 +168,7 @@ public class Enemy : MonoBehaviour
 
         if (canSeePlayer)
         {
-            if (!Aggressive && Random.value >= 0.25f)
+            if (!Aggressive && Random.value >= 0.15f)
             {
                 return EnemyState.Flee;
             }
@@ -199,7 +186,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            dist = Vector2.Distance(transform.position, transform.parent.position);
+            dist = Vector2.Distance(transform.parent.position, transform.parent.parent.position);
             if (dist > leashDist && Random.value < 0.66f)
             {
                 return EnemyState.Return;
@@ -225,8 +212,7 @@ public class Enemy : MonoBehaviour
         {
             transform.position = transform.parent.position;
         }
-
-
+        
         if (type != EnemyType.unassigned)
         {
             if (isRanged)
@@ -243,10 +229,8 @@ public class Enemy : MonoBehaviour
     private IEnumerator MeleeAttack()
     {
         transform.GetChild(1).gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.1f);
         transform.GetChild(1).gameObject.SetActive(false);
-        actionComplete = true;
-
     }
 
     private IEnumerator RangedAttack()
@@ -256,14 +240,15 @@ public class Enemy : MonoBehaviour
             foreach (GameObject proj in GetComponentInParent<Spawner>().Projectiles)
             {
                 var s = proj.name.Substring(proj.name.ToCharArray().Length - 4);
-                if (transform.name.Contains(s));
+                Debug.Log(proj.name);
+                Debug.Log(s);
+                if (transform.name.Contains(s))
                 {
                     Projectile = proj;
                 }
             }
         }
         yield return new WaitForSeconds(0.1f);
-        actionComplete = true;
         GameObject nproj = Instantiate(Projectile, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
         nproj.GetComponent<Rigidbody>().velocity = (Player.transform.position - transform.position).normalized * projSpeed;
         Destroy(nproj, projDuration);
@@ -273,7 +258,7 @@ public class Enemy : MonoBehaviour
     {
         try
         {
-            GetComponent<Animator>().SetTrigger("Hurt");
+            an.SetTrigger("Hurt");
         }
         catch (System.Exception)
         {
@@ -284,7 +269,7 @@ public class Enemy : MonoBehaviour
         {
             try
             {
-                GetComponent<Animator>().SetTrigger("Die");
+                an.SetTrigger("Die");
             }
             catch (System.Exception)
             {
@@ -298,7 +283,8 @@ public class Enemy : MonoBehaviour
     }
     internal IEnumerator Idle(float wait)
     {
+        isIdle = true;
         yield return new WaitForSeconds(wait);
-        actionComplete = true;
+        isIdle = false;
     }
 }

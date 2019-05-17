@@ -135,6 +135,7 @@ public class LevelGen : MonoBehaviour
         portal1.transform.rotation = Quaternion.Euler(90, 0, 0);
         Player.transform.GetChild(0).rotation = Quaternion.Euler(90, 0, 0);
         Player.name = "Player";
+        Enemy.Player = Player;
     }
     
     private void BuildMap()

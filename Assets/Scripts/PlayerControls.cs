@@ -10,8 +10,8 @@ public class PlayerControls : MonoBehaviour
     internal float playerSpeed = 3;
     private Animator an;
 
-    internal float currentHealth, lastHealth, projSpeed = 15, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f, pcShroud;
-    internal static int maxHealth = 100, experience;
+    internal float currentHealth, lastHealth, projSpeed = 2, projDuration = 10, meleeDamage = 1, projDamage = 0.5f, mDmgRes = 5, pDmgRes = 5, trueDamagePC = 5, criticalStrikePC = 5, criticalMultiplier = 1.2f, pcShroud;
+    internal static int maxHealth = 1000, experience;
 
     [SerializeField]
     GameObject Arrow;
@@ -35,9 +35,8 @@ public class PlayerControls : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-                canvas.GetComponentInChildren<Menu>().inGameSettings();
+            canvas.GetComponentInChildren<Menu>().inGameSettings();
             canvas.transform.GetChild(1).gameObject.SetActive(false);
-           
         }
         if (transform.parent.rotation != Quaternion.identity) //cleanups
         {
@@ -47,10 +46,7 @@ public class PlayerControls : MonoBehaviour
         {
             transform.position = transform.parent.position;
         }
-            updateUI(hp: currentHealth);
-        
-
-        lastHealth = currentHealth;
+        updateUI(hp: currentHealth);
         if (an.GetBool("Moving"))
         {
             GetComponent<SpriteRenderer>().flipX = transform.parent.GetComponent<NavMeshAgent>().destination.x >= transform.position.x ? false : true; //side facing
@@ -90,10 +86,18 @@ public class PlayerControls : MonoBehaviour
         {
             an.SetBool("CastLoop", true);
         }
-        else if(Input.GetKeyDown(KeyCode.C))
+        else if (Input.GetKeyDown(KeyCode.C))
         {
             an.SetBool("Moving", false);
             an.SetBool("Use", true);
+            if (currentHealth + maxHealth / 4 < maxHealth)
+            {
+                currentHealth += maxHealth / 4;
+            }
+            else
+            {
+                currentHealth = maxHealth;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Space) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
         {
@@ -107,7 +111,7 @@ public class PlayerControls : MonoBehaviour
             }
             rb.velocity = transform.position - transform.parent.GetComponent<NavMeshAgent>().destination * (playerSpeed + Random.Range(7, 11));
         }
-        else if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
             {
@@ -150,28 +154,21 @@ public class PlayerControls : MonoBehaviour
             transform.parent.GetComponent<NavMeshAgent>().velocity = Vector3.zero;
         }
     }
-    internal void HurtPlayer(int damage)
-    {
-        an.SetTrigger("Hurt");
-        if ((currentHealth - damage) > 0)
-        {
-            currentHealth -= damage;
-        }
-        else
-        {
-            an.SetTrigger("Die");
-        }
-    }
     internal void arrowSpawn()
     {
-        GameObject arrow = Instantiate(Arrow, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)), null);
-        Physics.IgnoreCollision(transform.GetComponent<BoxCollider>(), arrow.GetComponent<BoxCollider>(), true);
-        arrow.GetComponent<Rigidbody>().velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * projSpeed;
+        GameObject arrow = Instantiate(Arrow, transform.position, Quaternion.identity, null);
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+        {
+            arrow.transform.LookAt(hit.point, transform.forward);
+        }
+        arrow.GetComponent<Rigidbody>().velocity = arrow.transform.forward * projSpeed;
+        arrow.transform.Rotate(90, -90, 0);
         Destroy(arrow, projDuration);
     }
     internal void clampSpeed()
     {
-        transform.GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.x, -playerSpeed, playerSpeed), 0, Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.z, -playerSpeed, playerSpeed));
+        rb.velocity = new Vector3(Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.x, -playerSpeed, playerSpeed), 0, Mathf.Clamp(transform.GetComponent<Rigidbody>().velocity.z, -playerSpeed, playerSpeed));
     }
     internal void checkCastLoop()
     {
@@ -196,9 +193,10 @@ public class PlayerControls : MonoBehaviour
 
     internal void updateUI(float? hp = null, float? rp = null)
     {
+        lastHealth = currentHealth;
         if (hp != null)
         {
-            canvas.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Slider>().value = hp.Value;
+            canvas.transform.GetChild(1).GetChild(0).GetChild(0).GetComponent<Slider>().value = hp.Value/maxHealth;
         }
         if (rp != null)
         {
@@ -209,11 +207,11 @@ public class PlayerControls : MonoBehaviour
     }
     internal void takeDamage(float dmg)
     {
-        GetComponent<Animator>().SetTrigger("Hurt");
+        an.SetTrigger("Hurt");
         currentHealth -= dmg;
         if (currentHealth <= 0)
         {
-            GetComponent<Animator>().SetTrigger("Die");
+            an.SetTrigger("Die");
         }
     }
     private IEnumerator MeleeAttack()

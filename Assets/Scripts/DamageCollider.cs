@@ -17,6 +17,7 @@ public class DamageCollider : MonoBehaviour
         else
         {
             ens = GetComponentInParent<Enemy>(); //sets non static reference to this enemy for attacking or recieving damage
+            pcs = Enemy.Player.GetComponentInChildren<PlayerControls>();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -35,6 +36,7 @@ public class DamageCollider : MonoBehaviour
         }
         else if(transform.tag.Contains("Player") && other.transform.tag.Contains("Enemy")) //enemy hit this player
         {
+            ens = other.GetComponentInParent<Enemy>();
             if (other.name.Contains("Proj"))
             {
                 doDamage(ens.projDamage * 3, pcs.pDmgRes, ens.trueDmgPC, ens.criticalStrikePC, ens.criticalMultiplier * Rdctn, true);

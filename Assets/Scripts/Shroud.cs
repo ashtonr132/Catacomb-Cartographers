@@ -24,10 +24,10 @@ public class Shroud : MonoBehaviour
             PlayerControls.shroud++;
         }
         PlayerControls.updateuiinfo = true;
-        transform.gameObject.SetActive(false);
+        StartCoroutine(flip());
     }
 
-    /*private IEnumerator flip()
+    private IEnumerator flip()
     {
         var rot = transform.rotation;
         do
@@ -55,6 +55,8 @@ public class Shroud : MonoBehaviour
                 }
             }
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, Time.deltaTime);
-        } while (rot.x != 180 && rot.z != 180); 
-}*/
+        } while (rot.x != 180 && rot.z != 180);
+        transform.gameObject.SetActive(false);
+
+    }
 }

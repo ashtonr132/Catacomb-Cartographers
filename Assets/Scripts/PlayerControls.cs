@@ -14,6 +14,7 @@ public class PlayerControls : MonoBehaviour
     internal static int maxHealth = 1000, experience, spawners;
     internal static float recentHits = 0, maxShroud, shroud;
     internal static bool updateuiinfo = false;
+    internal static Vector3 direction = Vector3.zero;
     [SerializeField]
     GameObject Arrow;
     GameObject canvas;
@@ -64,121 +65,122 @@ public class PlayerControls : MonoBehaviour
             rp += 10;
             updateUI(rp: rp);
         }
-            if (an.GetBool("Moving"))
-            {
-                GetComponent<SpriteRenderer>().flipX = transform.parent.GetComponent<NavMeshAgent>().destination.x >= transform.position.x ? false : true; //side facing
-            }
-            else
-            {
-                GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true; //side facing
-            }
-            if (Input.GetKey(KeyCode.Mouse0))
-            {
+        if (an.GetBool("Moving"))
+        {
+            GetComponent<SpriteRenderer>().flipX = transform.parent.GetComponent<NavMeshAgent>().destination.x >= transform.position.x ? false : true; //side facing
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().flipX = Input.mousePosition.x > Screen.width / 2 ? false : true; //side facing
+        }
+        if (Input.GetKey(KeyCode.Mouse0) && rp >= 50)
+        {
 
-                an.SetBool("Moving", false);
-                if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
-                {
-                    an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
-                    StartCoroutine(MeleeAttack());
-                }
-                else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
-                {
-                    an.SetTrigger("Draw");
-                }
-            }
-            else if (Input.GetKey(KeyCode.Mouse1))
+            an.SetBool("Moving", false);
+            if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
             {
-                an.SetBool("Moving", false);
-                if (an.GetBool("AttackMode"))
-                {
-                    an.SetTrigger("Sheathe");
-                }
-                an.SetBool("BowAttack", true);
+                an.SetTrigger("Attack" + Random.Range(1, 4).ToString());
+                StartCoroutine(MeleeAttack());
             }
-            else if (Input.GetKeyDown(KeyCode.Q))
+            else if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle1")
             {
-                an.SetBool("Moving", false);
-                an.SetTrigger("Cast");
+                an.SetTrigger("Draw");
             }
-            else if (Input.GetKey(KeyCode.Q))
+        }
+        else if (Input.GetKey(KeyCode.Mouse1) && rp >= 50)
+        {
+            an.SetBool("Moving", false);
+            if (an.GetBool("AttackMode"))
             {
-                an.SetBool("CastLoop", true);
+                an.SetTrigger("Sheathe");
             }
-            else if (Input.GetKeyDown(KeyCode.C))
+            an.SetBool("BowAttack", true);
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            an.SetBool("Moving", false);
+            an.SetTrigger("Cast");
+        }
+        else if (Input.GetKey(KeyCode.Q))
+        {
+            an.SetBool("CastLoop", true);
+        }
+        else if (Input.GetKeyDown(KeyCode.C) && rp >= 400)
+        {
+            rp -= 400;
+            updateUI(rp: rp);
+            an.SetBool("Moving", false);
+            an.SetBool("Use", true);
+            if (currentHealth + maxHealth / 4 < maxHealth)
             {
-                rp -= 400;
-                updateUI(rp: rp);
-                an.SetBool("Moving", false);
-                an.SetBool("Use", true);
-                if (currentHealth + maxHealth / 4 < maxHealth)
-                {
-                    currentHealth += maxHealth / 4;
-                }
-                else
-                {
-                    currentHealth = maxHealth;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Space) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide"))
-            {
-                rp -= 75;
-                updateUI(rp: rp);
-                if (Random.value > 0.5f)
-                {
-                    an.SetTrigger("Slide");
-                }
-                else
-                {
-                    an.SetTrigger("Slide2");
-                }
-                rb.velocity = transform.position - transform.parent.GetComponent<NavMeshAgent>().destination * (playerSpeed + Random.Range(7, 11));
-            }
-            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-            {
-                if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
-                {
-                    an.SetTrigger("Sheathe");
-                    an.SetBool("Moving", false);
-                }
-                else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")) && !an.GetBool("Use"))
-                {
-                    an.SetBool("Moving", true);
-                    RaycastHit hit;
-                    Vector3 directionV = Vector3.zero;
-                    if (Input.GetKey(KeyCode.W))
-                    {
-                        directionV.z += 0.2f;
-                    }
-                    if (Input.GetKey(KeyCode.S))
-                    {
-                        directionV.z -= 0.2f;
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        directionV.x += 0.2f;
-                    }
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        directionV.x -= 0.2f;
-                    }
-                    if (Physics.Raycast(transform.parent.position + directionV, Vector3.down, out hit) && hit.transform.name.Contains("Level"))
-                    {
-                        transform.parent.GetComponent<NavMeshAgent>().SetDestination(hit.point);
-                    }
-                }
+                currentHealth += maxHealth / 4;
             }
             else
             {
-                an.SetBool("Moving", false);
+                currentHealth = maxHealth;
             }
-            if (!an.GetBool("Moving"))
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Slide") && rp >= 75)
+        {
+            rp -= 75;
+            updateUI(rp: rp);
+            if (Random.value > 0.5f)
             {
-                transform.parent.GetComponent<NavMeshAgent>().velocity = Vector3.zero;
+                an.SetTrigger("Slide");
             }
             else
             {
-                rp -= 0.25f;
-                updateUI(rp: rp);
+                an.SetTrigger("Slide2");
+            }
+            rb.velocity = transform.position - transform.parent.GetComponent<NavMeshAgent>().destination * (playerSpeed + Random.Range(70, 110));
+        }
+        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            if (an.GetBool("AttackMode") && !an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Sheathe"))
+            {
+                an.SetTrigger("Sheathe");
+                an.SetBool("Moving", false);
+            }
+            else if (!an.GetBool("AttackMode") && (an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Idle1") || an.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Move")) && !an.GetBool("Use"))
+            {
+                an.SetBool("Moving", true);
+                RaycastHit hit;
+                Vector3 directionV = Vector3.zero;
+                if (Input.GetKey(KeyCode.W))
+                {
+                    directionV.z += 0.2f;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    directionV.z -= 0.2f;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    directionV.x += 0.2f;
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    directionV.x -= 0.2f;
+                }
+                direction = directionV;
+                if (Physics.Raycast(transform.parent.position + directionV, Vector3.down, out hit) && hit.transform.name.Contains("Level"))
+                {
+                    transform.parent.GetComponent<NavMeshAgent>().SetDestination(hit.point);
+                }
+            }
+        }
+        else
+        {
+            an.SetBool("Moving", false);
+        }
+        if (!an.GetBool("Moving"))
+        {
+            transform.parent.GetComponent<NavMeshAgent>().velocity = Vector3.zero;
+        }
+        else
+        {
+            rp -= 0.25f;
+            updateUI(rp: rp);
         }
     }
     internal void arrowSpawn()

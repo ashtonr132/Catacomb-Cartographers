@@ -20,18 +20,9 @@ public class CameraFollow : MonoBehaviour
                 {
                     Cursor.lockState = CursorLockMode.Confined;
                 }
-                //RaycastHit hit;
                 Vector3 targPos;
-                //if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-               // {
-                //    targPos = (hit.point + player.transform.position) / 2;
-                //}
-                //else
-               // {
-                    targPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-               // }
-                targPos.y = transform.position.y;
-                transform.position = Vector3.SmoothDamp(transform.position, targPos, ref CurrentVelocity, SmoothTime);
+                targPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                transform.position = Vector3.SmoothDamp(transform.position, targPos + (PlayerControls.direction*5), ref CurrentVelocity, SmoothTime);
                 transform.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward);
                 offset = Camera.main.WorldToScreenPoint(player.transform.position - transform.position);
             }

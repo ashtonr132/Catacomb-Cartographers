@@ -75,7 +75,6 @@ public class PlayerControls : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Mouse0) && rp >= 50)
         {
-
             an.SetBool("Moving", false);
             if (an.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle2")
             {

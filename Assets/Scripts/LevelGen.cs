@@ -379,16 +379,20 @@ public class LevelGen : MonoBehaviour
             for (int y = 0; y < levelSize; y++)
             {
                 int wallTiles = NeighbourCount(x, y).Count;
-                if (wallTiles > maxCut || //cellular automata rule for turn to wall.
-                   (x == 0 || x == levelSize - 1 || y == 0 || y == levelSize - 1) || //is border tile.
-                   ((x == 1 || x == levelSize - 2 || y == 1 || y == levelSize - 2) && (rnd.Next(0, 100) < FillPercent * 2 && i < noiseRounds - 1))) //is next to border tile chance to be a wall is higher, this is used to generate a more natual border.
+                if (wallTiles <= maxCut &&  //tile is still alive
+                    x != 0 && x != levelSize - 1 && y != 0 && y != levelSize - 1 &&
+                    (x != 1 && x != levelSize - 2 && y != 1 && y != levelSize - 2 ||
+                    rnd.Next(0, 100) >= FillPercent * 2 || i >= noiseRounds - 1)) //is next to border tile chance to be a wall is higher, this is used to generate a more natual border.
+                {
+                    if (wallTiles < minCut)//tile is dead
+                    {
+                        grid[x, y] = false; //the tile is now empty
+                    }//else leave this tile as it is
+                }
+                else
                 {
                     grid[x, y] = true; //the tile is now a wall
                 }
-                else if (wallTiles < minCut)//cellular automata rule for turn to space.
-                {
-                    grid[x, y] = false; //the tile is now empty
-                }//else leave this tile as it is
             }
         }
     }
